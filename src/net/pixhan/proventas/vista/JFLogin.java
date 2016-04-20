@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import net.pixhan.seguridad.ConexionSeguridad;
 import net.pixhan.seguridad.UtilSeguridad;
 import net.pixhan.utilidades.DatosUsuario;
+import net.pixhan.utilidades.ValidacionCadenas;
 
 /**
  *
@@ -25,10 +26,14 @@ public class JFLogin extends javax.swing.JFrame {
 
     private DatosUsuario datosUsuario;
     private Connection conexionSeguridad;
+    private ValidacionCadenas validacion = new ValidacionCadenas();
+    private static final int TAMANIO_MAX_USERNAME = 15;
     
     /** Creates new form JFLogin */
     public JFLogin() {
         initComponents();
+        validacion.validarSoloLetras(txtUsername);
+        validacion.limitarCaracteres(txtUsername, TAMANIO_MAX_USERNAME);
         conexionSeguridad = ConexionSeguridad.GetConexionSeguridad("localhost", "root", "");
         if ( conexionSeguridad == null )
         {
