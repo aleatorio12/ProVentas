@@ -6,6 +6,7 @@
 
 package net.pixhan.proventas.vista;
 
+import com.sun.glass.events.KeyEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -58,11 +59,17 @@ public class JFLogin extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         jLabel1.setText("Usuario");
 
         jLabel2.setText("Contraseña");
 
+        btnIniciarSesion.setMnemonic('x');
         btnIniciarSesion.setText("Iniciar Sesión");
         btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -164,7 +171,39 @@ public class JFLogin extends javax.swing.JFrame {
 
     private void btnIniciarSesionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnIniciarSesionKeyPressed
         // TODO add your handling code here:
+        if ( evt.getKeyChar() == '\n' )
+        {
+            try {
+                // TODO add your handling code here:
+                this.datosUsuario = UtilSeguridad.autenticarUsuario(txtUsername.getText(), txtPassword.getText(), conexionSeguridad);
+                if ( datosUsuario != null )
+                {
+                    System.out.println("Conexion realizada correctamente, puede iniciar sesión");
+                }
+                else
+                {
+                    System.out.println("Ha ocurrido un error");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JFLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnIniciarSesionKeyPressed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // TODO add your handling code here:
+        
+        if ( evt.getKeyCode() == KeyEvent.VK_ESCAPE )
+        {
+            this.dispose();
+        }
+        else
+            if ( evt.getKeyCode() == KeyEvent.VK_ENTER )
+            {
+                btnIniciarSesionKeyPressed( evt );
+            }
+        
+    }//GEN-LAST:event_formKeyPressed
 
     /**
      * @param args the command line arguments
