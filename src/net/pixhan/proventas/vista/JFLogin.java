@@ -66,6 +66,11 @@ public class JFLogin extends javax.swing.JFrame {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         txtUsername.setText("usuario");
         txtUsername.addActionListener(new java.awt.event.ActionListener() {
@@ -128,11 +133,24 @@ public class JFLogin extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             this.datosUsuario = UtilSeguridad.autenticarUsuario(txtUsername.getText(), txtPassword.getText(), conexionSeguridad);
+            if ( datosUsuario != null )
+            {
+                System.out.println("Conexion realizada correctamente, puede iniciar sesión");
+            }
+            else
+            {
+                System.out.println("Ha ocurrido un error");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(JFLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
