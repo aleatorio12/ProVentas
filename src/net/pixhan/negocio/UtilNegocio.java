@@ -338,4 +338,65 @@ public class UtilNegocio {
         
     }    
     
+    public static int seleccionarProducto ( int producto, String nombreProducto, Connection conexion ) throws SQLException
+    {
+        int existencia;
+        int ocurreError;
+        
+        CallableStatement cstmt =  conexion.prepareCall("{call punto_venta.seleccionarProducto(?, ?, ?, ?)}");
+
+        cstmt.setInt("producto", producto);
+        cstmt.setString("nombre", nombreProducto);
+        cstmt.registerOutParameter("existencia", java.sql.Types.SMALLINT);
+        cstmt.registerOutParameter("existeError", java.sql.Types.TINYINT);
+        
+        cstmt.execute();
+ 
+        existencia = cstmt.getInt("existencia");
+        ocurreError = cstmt.getInt("existeError");            
+ 
+        cstmt.close();
+        
+        if ( ocurreError == SIN_ERROR )
+        {
+
+            return existencia;
+            
+        }
+
+        return 0; //Significa que ha ocurrido un error
+        
+    }
+
+    public static boolean actualizarDatosProducto ( int producto, int alerta, int descuento, float precioVenta, String nombreProducto, String descripcion, Connection conexion ) throws SQLException
+    {
+
+        int ocurreError;
+        
+        CallableStatement cstmt =  conexion.prepareCall("{call punto_venta.actualizarDatosProducto(?, ?, ?, ?, ?, ?, ?)}");
+
+        cstmt.setInt("producto", producto);
+        cstmt.setInt("alerta", alerta);
+        cstmt.setInt("descuento", descuento);
+         cstmt.setFloat("precioVenta", precioVenta);
+        cstmt.setString("nombre", nombreProducto);
+        cstmt.setString("descripcion", descripcion);
+        cstmt.registerOutParameter("existeError", java.sql.Types.TINYINT);
+        
+        cstmt.execute();
+ 
+        ocurreError = cstmt.getInt("existeError");            
+ 
+        cstmt.close();
+        
+        if ( ocurreError == SIN_ERROR )
+        {
+
+            return true;
+            
+        }
+
+        return false;
+    }    
+    
 }

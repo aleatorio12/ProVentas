@@ -6,6 +6,14 @@
 
 package net.pixhan.proventas.vista;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.pixhan.negocio.UtilNegocio;
+import net.pixhan.utilidades.ModificadorCadenas;
+import net.pixhan.utilidades.ValidacionCadenas;
+
 /**
  *
  * Autor: Victor Matías <vitomany@reproducir.net>
@@ -15,9 +23,20 @@ package net.pixhan.proventas.vista;
  */
 public class JFRealizarVentas extends javax.swing.JFrame {
 
+    private int cantidad;
+    private Connection conexion;
+    private ValidacionCadenas validacion = new ValidacionCadenas();
+    private static final int TAMANIO_MAX_NOMBRE_PRODUCTO = 30;
+    
     /** Creates new form JFRealizarVentas */
-    public JFRealizarVentas() {
+    public JFRealizarVentas( Connection conexion ) {
         initComponents();
+        this.conexion = conexion;
+        validacion.validarNumerosYPuntos(txtCodigoProducto);
+        validacion.validarSoloLetras(txtNombreProducto);
+        validacion.validarSoloNumeros(txtCantidad);
+        validacion.limitarCaracteres(txtNombreProducto, TAMANIO_MAX_NOMBRE_PRODUCTO);
+
     }
 
     /** This method is called from within the constructor to
@@ -70,8 +89,18 @@ public class JFRealizarVentas extends javax.swing.JFrame {
         jLabel3.setText("Cantidad");
 
         jButton1.setText("Procesar Compra");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Buscar Producto");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -91,13 +120,12 @@ public class JFRealizarVentas extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(23, 23, 23))))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE))
@@ -126,6 +154,25 @@ public class JFRealizarVentas extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+            this.cantidad = UtilNegocio.seleccionarProducto(ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(txtCodigoProducto.getText(),".")), txtNombreProducto.getText(), this.conexion);
+        } catch (SQLException ex) {
+            Logger.getLogger(JFRealizarVentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        boolean ventaExitosa;
+        ventaExitosa = UtilNegocio.venderProducto(ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(txtCodigoProducto.getText(),"."), WIDTH, TOP_ALIGNMENT, conexion)
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
