@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.pixhan.negocio.UtilNegocio;
+import net.pixhan.utilidades.DatosUsuario;
 import net.pixhan.utilidades.ModificadorCadenas;
 import net.pixhan.utilidades.ValidacionCadenas;
 
@@ -26,12 +27,14 @@ public class JFRealizarVentas extends javax.swing.JFrame {
     private int cantidad;
     private Connection conexion;
     private ValidacionCadenas validacion = new ValidacionCadenas();
+    private DatosUsuario datosUsuario;
     private static final int TAMANIO_MAX_NOMBRE_PRODUCTO = 30;
     
     /** Creates new form JFRealizarVentas */
-    public JFRealizarVentas( Connection conexion ) {
+    public JFRealizarVentas( Connection conexion, DatosUsuario datosUsuario ) {
         initComponents();
         this.conexion = conexion;
+        this.datosUsuario = datosUsuario;
         validacion.validarNumerosYPuntos(txtCodigoProducto);
         validacion.validarSoloLetras(txtNombreProducto);
         validacion.validarSoloNumeros(txtCantidad);
@@ -169,7 +172,16 @@ public class JFRealizarVentas extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         boolean ventaExitosa;
-        ventaExitosa = UtilNegocio.venderProducto(ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(txtCodigoProducto.getText(),"."), WIDTH, TOP_ALIGNMENT, conexion)
+        try {
+            ventaExitosa = UtilNegocio.venderProducto(
+                    ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(txtCodigoProducto.getText(),".")),
+                    datosUsuario.getUsuario(),
+                    ModificadorCadenas.cadenaAEntero(txtCantidad.getText()),
+                    conexion
+            );
+        } catch (SQLException ex) {
+            Logger.getLogger(JFRealizarVentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -204,7 +216,7 @@ public class JFRealizarVentas extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFRealizarVentas().setVisible(true);
+                //new JFRealizarVentas().setVisible(true);
             }
         });
     }
