@@ -128,9 +128,9 @@ public class JFAddProducto extends javax.swing.JFrame {
                         .addComponent(txtPrecio_Venta, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(txtExistencia_Producto, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(txtDescripcion_Productos, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtNombre_Productos, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtCodigo_Productos, javax.swing.GroupLayout.Alignment.LEADING)))
-                .addContainerGap(113, Short.MAX_VALUE))
+                        .addComponent(txtNombre_Productos, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(txtCodigo_Productos, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

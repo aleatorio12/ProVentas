@@ -5,6 +5,7 @@
  */
 package net.pixhan.proventas.vista;
 
+import java.awt.event.KeyEvent;
 import net.pixhan.utilidades.ValidacionCadenas;
 
 /**
@@ -25,6 +26,7 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
         validacion.limitarCaracteres(this.txtNombreClaseTercearia, this.TAMANIO_MAX_NOMBRE_CLASE_TERCEARIA);
         validacion.validarSoloLetras(this.txtDescripcionClaseTercearia);
         validacion.validarSoloLetras(this.txtNombreClaseTercearia);
+        this.btnAdd_Clase.setMnemonic(KeyEvent.VK_ENTER);
     }
 
     /**
@@ -59,7 +61,13 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
             }
         });
 
+        btnAdd_Clase.setMnemonic('O');
         btnAdd_Clase.setText("Añadir Clase");
+        btnAdd_Clase.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdd_ClaseActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
 
@@ -114,6 +122,12 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
     private void txtClaseSecundariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClaseSecundariaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtClaseSecundariaActionPerformed
+
+    private void btnAdd_ClaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd_ClaseActionPerformed
+
+        System.out.println("Holis :D");
+// TODO add your handling code here:
+    }//GEN-LAST:event_btnAdd_ClaseActionPerformed
 
     /**
      * @param args the command line arguments
