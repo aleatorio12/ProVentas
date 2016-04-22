@@ -5,17 +5,26 @@
  */
 package net.pixhan.proventas.vista;
 
+import net.pixhan.utilidades.ValidacionCadenas;
+
 /**
  *
  * @author Baloo
  */
 public class JFAddAreaNegocio extends javax.swing.JFrame {
-
+    
+    private ValidacionCadenas validacion = new ValidacionCadenas();
+    private static final int TAMANIO_MAX_NOMBRE_AREANEGOCIO = 30;
+    private static final int TAMANIO_MAX_DESCRIP_AREANEGOCIO = 45;
     /**
      * Creates new form JFAddAreaNegocio
      */
     public JFAddAreaNegocio() {
         initComponents();
+        validacion.limitarCaracteres(txtNombre, this.TAMANIO_MAX_NOMBRE_AREANEGOCIO);
+        validacion.limitarCaracteres(txtDescripcion, this.TAMANIO_MAX_DESCRIP_AREANEGOCIO);
+        validacion.validarSoloLetras(txtNombre);
+        validacion.validarSoloLetras(txtDescripcion);
     }
 
     /**
@@ -31,8 +40,8 @@ public class JFAddAreaNegocio extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         txtDescripcion = new javax.swing.JTextField();
-        cmdAceptar = new javax.swing.JButton();
-        cmdCancelar = new javax.swing.JButton();
+        btnAceptar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,9 +55,9 @@ public class JFAddAreaNegocio extends javax.swing.JFrame {
             }
         });
 
-        cmdAceptar.setText("Añadir Area");
+        btnAceptar.setText("Añadir Area");
 
-        cmdCancelar.setText("Cancelar");
+        btnCancelar.setText("Cancelar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -69,9 +78,9 @@ public class JFAddAreaNegocio extends javax.swing.JFrame {
                                 .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(99, 99, 99)
-                        .addComponent(cmdAceptar)
+                        .addComponent(btnAceptar)
                         .addGap(26, 26, 26)
-                        .addComponent(cmdCancelar)))
+                        .addComponent(btnCancelar)))
                 .addContainerGap(111, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -87,8 +96,8 @@ public class JFAddAreaNegocio extends javax.swing.JFrame {
                     .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmdAceptar)
-                    .addComponent(cmdCancelar))
+                    .addComponent(btnAceptar)
+                    .addComponent(btnCancelar))
                 .addContainerGap(134, Short.MAX_VALUE))
         );
 
@@ -135,8 +144,8 @@ public class JFAddAreaNegocio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cmdAceptar;
-    private javax.swing.JButton cmdCancelar;
+    private javax.swing.JButton btnAceptar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField txtDescripcion;
