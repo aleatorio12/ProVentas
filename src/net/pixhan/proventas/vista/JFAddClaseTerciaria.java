@@ -5,17 +5,26 @@
  */
 package net.pixhan.proventas.vista;
 
+import net.pixhan.utilidades.ValidacionCadenas;
+
 /**
  *
  * @author Baloo
  */
 public class JFAddClaseTerciaria extends javax.swing.JFrame {
 
+    private ValidacionCadenas validacion = new ValidacionCadenas();
+    private static final int TAMANIO_MAX_NOMBRE_CLASE_TERCEARIA = 30;
+    private static final int TAMANIO_MAX_DESCRIPCION_CLASE_TERCEARIA = 45;    
     /**
      * Creates new form JFAddClaseTerciaria
      */
     public JFAddClaseTerciaria() {
         initComponents();
+        validacion.limitarCaracteres(this.txtDescripcionClaseTercearia, this.TAMANIO_MAX_DESCRIPCION_CLASE_TERCEARIA);
+        validacion.limitarCaracteres(this.txtNombreClaseTercearia, this.TAMANIO_MAX_NOMBRE_CLASE_TERCEARIA);
+        validacion.validarSoloLetras(this.txtDescripcionClaseTercearia);
+        validacion.validarSoloLetras(this.txtNombreClaseTercearia);
     }
 
     /**
@@ -30,23 +39,23 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtClase_Secundario = new javax.swing.JTextField();
-        txtNombre_Area = new javax.swing.JTextField();
-        txtDescripcion = new javax.swing.JTextField();
+        txtClaseSecundaria = new javax.swing.JTextField();
+        txtNombreClaseTercearia = new javax.swing.JTextField();
+        txtDescripcionClaseTercearia = new javax.swing.JTextField();
         btnAdd_Clase = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Clase Secundario");
+        jLabel1.setText("Clase Secundaria:");
 
-        jLabel2.setText("Nombre De Area");
+        jLabel2.setText("Nombre Clase Tercearia:");
 
-        jLabel3.setText("Descripción");
+        jLabel3.setText("Descripción:");
 
-        txtClase_Secundario.addActionListener(new java.awt.event.ActionListener() {
+        txtClaseSecundaria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtClase_SecundarioActionPerformed(evt);
+                txtClaseSecundariaActionPerformed(evt);
             }
         });
 
@@ -62,20 +71,20 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
                 .addGap(77, 77, 77)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(62, 62, 62)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
-                            .addComponent(txtNombre_Area)
-                            .addComponent(txtClase_Secundario)))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3))
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtClaseSecundaria, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                            .addComponent(txtNombreClaseTercearia)
+                            .addComponent(txtDescripcionClaseTercearia)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnAdd_Clase)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
                         .addComponent(btnCancelar)))
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -83,15 +92,15 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtClase_Secundario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtClaseSecundaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtNombre_Area, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombreClaseTercearia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDescripcionClaseTercearia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(54, 54, 54)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd_Clase)
@@ -102,9 +111,9 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtClase_SecundarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClase_SecundarioActionPerformed
+    private void txtClaseSecundariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClaseSecundariaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtClase_SecundarioActionPerformed
+    }//GEN-LAST:event_txtClaseSecundariaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -147,8 +156,8 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtClase_Secundario;
-    private javax.swing.JTextField txtDescripcion;
-    private javax.swing.JTextField txtNombre_Area;
+    private javax.swing.JTextField txtClaseSecundaria;
+    private javax.swing.JTextField txtDescripcionClaseTercearia;
+    private javax.swing.JTextField txtNombreClaseTercearia;
     // End of variables declaration//GEN-END:variables
 }
