@@ -114,6 +114,11 @@ public class JFRealizarVentas extends javax.swing.JFrame {
         });
 
         btnProcesarVenta.setText("Procesar Venta");
+        btnProcesarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProcesarVentaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -202,23 +207,38 @@ public class JFRealizarVentas extends javax.swing.JFrame {
 
         modelo.addRow(fila);
 
-        tblVentaProductos.setModel(modelo);
-
-// TODO add your handling code here:
-        boolean ventaExitosa;
-        try {
-            ventaExitosa = UtilNegocio.venderProducto(
-                    ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(txtCodigoProducto.getText(),".")),
-                    datosUsuario.getUsuario(),
-                    ModificadorCadenas.cadenaAEntero(txtCantidad.getText()),
-                    conexion
-            );
-        } catch (SQLException ex) {
-            Logger.getLogger(JFRealizarVentas.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
+        tblVentaProductos.setModel(modelo);        
     }//GEN-LAST:event_btnAnadirProductoActionPerformed
+
+    private void btnProcesarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesarVentaActionPerformed
+        // TODO add your handling code here:
+        boolean ventaExitosa = false;
+        DefaultTableModel model = (DefaultTableModel) tblVentaProductos.getModel();
+
+        for ( int fila = 0; fila < model.getRowCount(); fila++ ){
+
+            try {
+                ventaExitosa = UtilNegocio.venderProducto(
+                        ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(this.tblVentaProductos.getValueAt(fila, 0).toString(),".")),
+                        datosUsuario.getUsuario(),
+                        ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(this.tblVentaProductos.getValueAt(fila, 2).toString(),".")),
+                        conexion
+                );
+            } catch (SQLException ex) {
+                Logger.getLogger(JFRealizarVentas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if ( ventaExitosa == false ){
+                System.out.println("Ha ocurrido un error eliminando las cosas");
+                break;
+                
+            }
+            
+            model.removeRow(fila);
+            fila-=1;
+        }
+
+    }//GEN-LAST:event_btnProcesarVentaActionPerformed
 
     /**
      * @param args the command line arguments
