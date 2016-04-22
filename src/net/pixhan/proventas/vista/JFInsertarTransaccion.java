@@ -5,6 +5,15 @@
  */
 package net.pixhan.proventas.vista;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.pixhan.negocio.UtilNegocio;
+import net.pixhan.utilidades.DatosUsuario;
+import net.pixhan.utilidades.ModificadorCadenas;
+import net.pixhan.utilidades.ValidacionCadenas;
+
 /**
  *
  * @author Baloo
@@ -14,8 +23,15 @@ public class JFInsertarTransaccion extends javax.swing.JFrame {
     /**
      * Creates new form JFInsertarTransaccion
      */
+    
+    DatosUsuario datosUsuario;
+    Connection conexion;
+    ValidacionCadenas validacion = new ValidacionCadenas();
+    
     public JFInsertarTransaccion() {
         initComponents();
+        rellenarClases();
+        validacion.validarNumerosYPuntos(txtCantidad);
     }
 
     /**
@@ -30,7 +46,7 @@ public class JFInsertarTransaccion extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        CBTipo = new javax.swing.JComboBox<>();
+        cbTipo = new javax.swing.JComboBox<String>();
         txtCantidad = new javax.swing.JTextField();
         btnAdd_Transaccion = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -43,9 +59,14 @@ public class JFInsertarTransaccion extends javax.swing.JFrame {
 
         jLabel3.setText("Cantidad:");
 
-        CBTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnAdd_Transaccion.setText("Añadir Transacción");
+        btnAdd_Transaccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdd_TransaccionActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
 
@@ -64,7 +85,7 @@ public class JFInsertarTransaccion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCancelar)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(CBTipo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cbTipo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtCantidad, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addContainerGap(88, Short.MAX_VALUE))
         );
@@ -74,7 +95,7 @@ public class JFInsertarTransaccion extends javax.swing.JFrame {
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(CBTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -88,6 +109,28 @@ public class JFInsertarTransaccion extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAdd_TransaccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd_TransaccionActionPerformed
+        // TODO add your handling code here:
+        boolean existeError = true;
+        try {
+            existeError = UtilNegocio.insertarTransaccion("I", 
+                    datosUsuario.getUsuario(),
+                    ModificadorCadenas.cadenaAEntero(txtCantidad.getText()),
+                    conexion);
+            if ( existeError == true ){
+                System.out.println("Ha ocurrido un error");
+            }
+            else{
+                System.out.println("Sin errores");
+            }
+               
+                
+        } catch (SQLException ex) {
+            Logger.getLogger(JFAddClaseSecundaria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnAdd_TransaccionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -123,11 +166,18 @@ public class JFInsertarTransaccion extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void rellenarClases(){
+        this.cbTipo.removeAllItems();
+        //Implementacion de lo demás del código
+        this.cbTipo.addItem("Ingreso");
+        this.cbTipo.addItem("Egreso");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> CBTipo;
     private javax.swing.JButton btnAdd_Transaccion;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JComboBox<String> cbTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
