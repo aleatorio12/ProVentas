@@ -5,17 +5,27 @@
  */
 package net.pixhan.proventas.vista;
 
+import net.pixhan.utilidades.ValidacionCadenas;
+
 /**
  *
  * @author Baloo
  */
 public class JFAddClasePrimaria extends javax.swing.JFrame {
 
+    private ValidacionCadenas validacion = new ValidacionCadenas();
+    private static final int TAMANIO_MAX_NOMBRE_CLASE_PRIMARIA = 30;
+    private static final int TAMANIO_MAX_DESCRIPCION_CLASE_PRIMARIA = 45;
+    
     /**
      * Creates new form JFAddClasePrimaria
      */
     public JFAddClasePrimaria() {
         initComponents();
+        validacion.limitarCaracteres(txtDescripcion, this.TAMANIO_MAX_DESCRIPCION_CLASE_PRIMARIA);
+        validacion.limitarCaracteres(txtNombreArea, this.TAMANIO_MAX_NOMBRE_CLASE_PRIMARIA);
+        validacion.validarSoloLetras(txtDescripcion);
+        validacion.validarSoloLetras(txtNombreArea);
     }
 
     /**
@@ -32,15 +42,15 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         btnAdd_Clase = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        txtArea_Negocio = new javax.swing.JTextField();
-        txtNombre_Area = new javax.swing.JTextField();
+        txtAreaNegocio = new javax.swing.JTextField();
+        txtNombreArea = new javax.swing.JTextField();
         txtDescripcion = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Area De Negocio:");
 
-        jLabel2.setText("Nombre De Area:");
+        jLabel2.setText("Nombre De Clase Primaria:");
 
         jLabel3.setText("Descripción");
 
@@ -48,9 +58,9 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
 
         btnCancelar.setText("Cancelar");
 
-        txtArea_Negocio.addActionListener(new java.awt.event.ActionListener() {
+        txtAreaNegocio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtArea_NegocioActionPerformed(evt);
+                txtAreaNegocioActionPerformed(evt);
             }
         });
 
@@ -62,25 +72,26 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(82, 82, 82)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtArea_Negocio, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel2))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNombre_Area, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
-                                    .addComponent(txtDescripcion)))))
+                                .addGap(4, 4, 4))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(47, 47, 47)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtAreaNegocio, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtNombreArea, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                                .addComponent(txtDescripcion))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(59, 59, 59)
                         .addComponent(btnAdd_Clase)
                         .addGap(27, 27, 27)
                         .addComponent(btnCancelar)))
-                .addContainerGap(150, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -88,11 +99,11 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
                 .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtArea_Negocio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtAreaNegocio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtNombre_Area, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombreArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -107,9 +118,9 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtArea_NegocioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtArea_NegocioActionPerformed
+    private void txtAreaNegocioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAreaNegocioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtArea_NegocioActionPerformed
+    }//GEN-LAST:event_txtAreaNegocioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,8 +163,8 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtArea_Negocio;
+    private javax.swing.JTextField txtAreaNegocio;
     private javax.swing.JTextField txtDescripcion;
-    private javax.swing.JTextField txtNombre_Area;
+    private javax.swing.JTextField txtNombreArea;
     // End of variables declaration//GEN-END:variables
 }
