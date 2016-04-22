@@ -10,7 +10,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 import net.pixhan.negocio.UtilNegocio;
+import net.pixhan.utilidades.DatosProducto;
 import net.pixhan.utilidades.DatosUsuario;
 import net.pixhan.utilidades.ModificadorCadenas;
 import net.pixhan.utilidades.ValidacionCadenas;
@@ -28,6 +30,7 @@ public class JFRealizarVentas extends javax.swing.JFrame {
     private Connection conexion;
     private ValidacionCadenas validacion = new ValidacionCadenas();
     private DatosUsuario datosUsuario;
+    private DatosProducto datosProducto;
     private static final int TAMANIO_MAX_NOMBRE_PRODUCTO = 30;
     
     /** Creates new form JFRealizarVentas */
@@ -54,36 +57,41 @@ public class JFRealizarVentas extends javax.swing.JFrame {
         txtCodigoProducto = new javax.swing.JTextField();
         txtNombreProducto = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblVentaProductos = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtCantidad = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnAnadirProducto = new javax.swing.JButton();
+        btnBuscarProducto = new javax.swing.JButton();
+        btnProcesarVenta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblVentaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Nombre del producto", "Cantidad", "Precio", "Total"
+                "Código Producto", "Nombrel Producto", "Cantidad", "Precio", "Descuento (%)", "Total"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, true, false
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblVentaProductos);
 
         jLabel1.setText("Código del producto");
 
@@ -91,19 +99,21 @@ public class JFRealizarVentas extends javax.swing.JFrame {
 
         jLabel3.setText("Cantidad");
 
-        jButton1.setText("Procesar Compra");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAnadirProducto.setText("Añadir Producto");
+        btnAnadirProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAnadirProductoActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Buscar Producto");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscarProducto.setText("Buscar Producto");
+        btnBuscarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnBuscarProductoActionPerformed(evt);
             }
         });
+
+        btnProcesarVenta.setText("Procesar Venta");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -125,13 +135,17 @@ public class JFRealizarVentas extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(btnBuscarProducto)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)))
+                        .addComponent(btnAnadirProducto)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnProcesarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(61, 61, 61))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,18 +161,20 @@ public class JFRealizarVentas extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtNombreProducto, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addComponent(jButton2))
+                        .addComponent(btnAnadirProducto)
+                        .addComponent(btnBuscarProducto))
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnProcesarVenta)
+                .addGap(20, 20, 20))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductoActionPerformed
         // TODO add your handling code here:
         
         try {
@@ -167,10 +183,28 @@ public class JFRealizarVentas extends javax.swing.JFrame {
             Logger.getLogger(JFRealizarVentas.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnBuscarProductoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+    private void btnAnadirProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirProductoActionPerformed
+
+        float total = 0.00f;
+        DefaultTableModel modelo = (DefaultTableModel) tblVentaProductos.getModel();
+        Object [] fila = new Object[5];
+
+        fila[0] = txtCodigoProducto.getText();
+        fila[1]= txtNombreProducto.getText();
+        fila[2]= ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(txtCantidad.getText(),"."));
+        fila[3]= datosProducto.getPrecio();
+        fila[4]= datosProducto.getDescuento();
+        total = ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(txtCantidad.getText(),"."))
+                * (datosProducto.getPrecio() - ( datosProducto.getPrecio() / 100 * datosProducto.getDescuento()));
+        fila[5]= total;
+
+        modelo.addRow(fila);
+
+        tblVentaProductos.setModel(modelo);
+
+// TODO add your handling code here:
         boolean ventaExitosa;
         try {
             ventaExitosa = UtilNegocio.venderProducto(
@@ -184,7 +218,7 @@ public class JFRealizarVentas extends javax.swing.JFrame {
         }
         
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnAnadirProductoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -222,13 +256,14 @@ public class JFRealizarVentas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnAnadirProducto;
+    private javax.swing.JButton btnBuscarProducto;
+    private javax.swing.JButton btnProcesarVenta;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblVentaProductos;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtCodigoProducto;
     private javax.swing.JTextField txtNombreProducto;
