@@ -398,5 +398,36 @@ public class UtilNegocio {
 
         return false;
     }    
+
+    public static boolean cargarDatosProducto ( int producto, Connection conexion ) throws SQLException
+    {
+
+        int ocurreError;
+        
+        CallableStatement cstmt =  conexion.prepareCall("{call punto_venta.actualizarDatosProducto(?, ?, ?, ?, ?, ?, ?)}");
+
+        cstmt.setInt("producto", producto);
+        cstmt.registerOutParameter("alerta", java.sql.Types.SMALLINT);
+        cstmt.registerOutParameter("descuento", java.sql.Types.TINYINT);
+        cstmt.registerOutParameter("precioVenta", java.sql.Types.FLOAT);
+        cstmt.registerOutParameter("nombreProducto", java.sql.Types.VARCHAR);
+        cstmt.registerOutParameter("descripcion", java.sql.Types.VARCHAR);
+        cstmt.registerOutParameter("existeError", java.sql.Types.TINYINT);
+        
+        cstmt.execute();
+ 
+        ocurreError = cstmt.getInt("existeError");            
+ 
+        cstmt.close();
+        
+        if ( ocurreError == SIN_ERROR )
+        {
+
+            return true;
+            
+        }
+
+        return false;
+    }    
     
 }

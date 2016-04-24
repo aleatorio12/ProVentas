@@ -43,11 +43,12 @@ public class JFAddUsuario extends javax.swing.JFrame {
         txtPrimer_Apellido = new javax.swing.JTextField();
         txtSegundo_Apellido = new javax.swing.JTextField();
         txtApellido_Casada = new javax.swing.JTextField();
-        txtRol = new javax.swing.JTextField();
-        txtUser_Name = new javax.swing.JTextField();
-        txtPassword = new javax.swing.JTextField();
-        txtRepetir_Password = new javax.swing.JTextField();
+        txtUsername = new javax.swing.JTextField();
         cdmAdd_Usuario = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox();
+        btnCancelar = new javax.swing.JButton();
+        txtRepetirPassword = new javax.swing.JPasswordField();
+        txtPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,6 +86,16 @@ public class JFAddUsuario extends javax.swing.JFrame {
 
         cdmAdd_Usuario.setText("Añadir Usuario");
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Administrador", "Vendedor" }));
+        jComboBox1.setSelectedIndex(1);
+
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -92,32 +103,31 @@ public class JFAddUsuario extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cdmAdd_Usuario)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel10))
-                        .addGap(47, 47, 47)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                            .addComponent(txtRepetir_Password)
-                            .addComponent(txtUser_Name)
-                            .addComponent(txtRol)
-                            .addComponent(txtApellido_Casada)
-                            .addComponent(txtSegundo_Apellido)
-                            .addComponent(txtPrimer_Apellido)
-                            .addComponent(txtTercer_Nombre)
-                            .addComponent(txtSegundo_Nombre)
-                            .addComponent(txtPrimer_Nombre))))
-                .addContainerGap(132, Short.MAX_VALUE))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10)
+                    .addComponent(cdmAdd_Usuario))
+                .addGap(42, 42, 42)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtApellido_Casada)
+                    .addComponent(txtSegundo_Apellido)
+                    .addComponent(txtPrimer_Apellido)
+                    .addComponent(txtTercer_Nombre)
+                    .addComponent(txtSegundo_Nombre)
+                    .addComponent(txtPrimer_Nombre)
+                    .addComponent(jComboBox1, 0, 131, Short.MAX_VALUE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtRepetirPassword)
+                    .addComponent(txtPassword)
+                    .addComponent(txtUsername))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,13 +157,13 @@ public class JFAddUsuario extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(txtApellido_Casada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(txtRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
-                    .addComponent(txtUser_Name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
@@ -161,10 +171,12 @@ public class JFAddUsuario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
-                    .addComponent(txtRepetir_Password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addComponent(cdmAdd_Usuario)
-                .addContainerGap())
+                    .addComponent(txtRepetirPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnCancelar)
+                    .addComponent(cdmAdd_Usuario))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pack();
@@ -177,6 +189,11 @@ public class JFAddUsuario extends javax.swing.JFrame {
     private void txtPrimer_ApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrimer_ApellidoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrimer_ApellidoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -215,7 +232,9 @@ public class JFAddUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton cdmAdd_Usuario;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -227,14 +246,13 @@ public class JFAddUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField txtApellido_Casada;
-    private javax.swing.JTextField txtPassword;
+    private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtPrimer_Apellido;
     private javax.swing.JTextField txtPrimer_Nombre;
-    private javax.swing.JTextField txtRepetir_Password;
-    private javax.swing.JTextField txtRol;
+    private javax.swing.JPasswordField txtRepetirPassword;
     private javax.swing.JTextField txtSegundo_Apellido;
     private javax.swing.JTextField txtSegundo_Nombre;
     private javax.swing.JTextField txtTercer_Nombre;
-    private javax.swing.JTextField txtUser_Name;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }

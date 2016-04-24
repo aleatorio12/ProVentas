@@ -41,11 +41,11 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtClaseSecundaria = new javax.swing.JTextField();
         txtNombreClaseTercearia = new javax.swing.JTextField();
         txtDescripcionClaseTercearia = new javax.swing.JTextField();
         btnAdd_Clase = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        cbClaseSecundaria = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,12 +54,6 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
         jLabel2.setText("Nombre Clase Tercearia:");
 
         jLabel3.setText("Descripción:");
-
-        txtClaseSecundaria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtClaseSecundariaActionPerformed(evt);
-            }
-        });
 
         btnAdd_Clase.setMnemonic('O');
         btnAdd_Clase.setText("Añadir Clase");
@@ -70,6 +64,11 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -84,15 +83,15 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3))
                         .addGap(33, 33, 33)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtClaseSecundaria, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cbClaseSecundaria, 0, 130, Short.MAX_VALUE)
                             .addComponent(txtNombreClaseTercearia)
                             .addComponent(txtDescripcionClaseTercearia)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnAdd_Clase)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCancelar)))
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,7 +99,7 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtClaseSecundaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbClaseSecundaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -113,21 +112,22 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd_Clase)
                     .addComponent(btnCancelar))
-                .addContainerGap(91, Short.MAX_VALUE))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtClaseSecundariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClaseSecundariaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtClaseSecundariaActionPerformed
 
     private void btnAdd_ClaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd_ClaseActionPerformed
 
         System.out.println("Holis :D");
 // TODO add your handling code here:
     }//GEN-LAST:event_btnAdd_ClaseActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -167,10 +167,10 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd_Clase;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JComboBox cbClaseSecundaria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtClaseSecundaria;
     private javax.swing.JTextField txtDescripcionClaseTercearia;
     private javax.swing.JTextField txtNombreClaseTercearia;
     // End of variables declaration//GEN-END:variables
