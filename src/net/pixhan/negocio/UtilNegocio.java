@@ -8,7 +8,11 @@ package net.pixhan.negocio;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JComboBox;
+import net.pixhan.utilidades.DatosProducto;
 
 /**
  *
@@ -399,12 +403,13 @@ public class UtilNegocio {
         return false;
     }    
 
-    public static boolean cargarDatosProducto ( int producto, Connection conexion ) throws SQLException
+    public static DatosProducto cargarDatosProducto ( int producto, Connection conexion ) throws SQLException
     {
 
+        DatosProducto datosProducto = null;
         int ocurreError;
         
-        CallableStatement cstmt =  conexion.prepareCall("{call punto_venta.actualizarDatosProducto(?, ?, ?, ?, ?, ?, ?)}");
+        CallableStatement cstmt =  conexion.prepareCall("{call punto_venta.cargarDatosProducto(?, ?, ?, ?, ?, ?, ?)}");
 
         cstmt.setInt("producto", producto);
         cstmt.registerOutParameter("alerta", java.sql.Types.SMALLINT);
@@ -418,16 +423,49 @@ public class UtilNegocio {
  
         ocurreError = cstmt.getInt("existeError");            
  
-        cstmt.close();
-        
         if ( ocurreError == SIN_ERROR )
         {
 
-            return true;
-            
-        }
+            datosProducto.setAlerta(cstmt.getInt("alerta"));
+            datosProducto.setDescuento(cstmt.getInt("descuento"));
+            datosProducto.setPrecio(cstmt.getFloat("precioVenta"));
+            datosProducto.setNombreProducto(cstmt.getString("nombreProducto"));
+            datosProducto.setDescripcion(cstmt.getString("descripcion"));
+           
+        }        
 
-        return false;
+        cstmt.close();
+
+        return datosProducto;
+    }    
+    
+    /**
+     *
+     * @param tipo
+     * @param Connection
+     * @return
+     */
+    public static ArrayList<DatosClases> devolverNombresClases ( String tipo, Connection conexion ) throws SQLException
+    {
+        ArrayList<DatosClases> datosClases = null;
+        DatosClases datos = null;
+        CallableStatement cstmt =  conexion.prepareCall("{call punto_venta.devolverNombres( ? )}");
+
+        cstmt.setString("tipo", tipo);        
+        cstmt.execute();
+  
+        final ResultSet rs = cstmt.getResultSet();
+        
+        while ( rs.next() ){
+
+            datos.setIdClase(rs.getInt("ID"));
+            datos.setNombreClase(rs.getString("NOMBRE"));
+            datosClases.add(datos);            
+        }
+        
+        cstmt.close();
+
+        return datosClases;
     }    
     
 }

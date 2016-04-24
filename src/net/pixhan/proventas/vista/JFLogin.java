@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.pixhan.negocio.ConexionNegocio;
 import net.pixhan.seguridad.ConexionSeguridad;
 import net.pixhan.seguridad.UtilSeguridad;
 import net.pixhan.utilidades.DatosUsuario;
@@ -27,6 +28,7 @@ public class JFLogin extends javax.swing.JFrame {
 
     private DatosUsuario datosUsuario;
     private Connection conexionSeguridad;
+    private Connection conexionNegocio;
     private ValidacionCadenas validacion = new ValidacionCadenas();
     private static final int TAMANIO_MAX_USERNAME = 15;
     
@@ -36,9 +38,13 @@ public class JFLogin extends javax.swing.JFrame {
         validacion.validarSoloLetras(txtUsername);
         validacion.limitarCaracteres(txtUsername, TAMANIO_MAX_USERNAME);
         conexionSeguridad = ConexionSeguridad.GetConexionSeguridad("localhost", "root", "");
-        if ( conexionSeguridad == null )
+        conexionNegocio = ConexionNegocio.GetConexionNegocio("localhost", "root", "");
+        if ( conexionSeguridad == null || conexionNegocio == null)
         {
             System.out.println("Error al conectarse");
+        }
+        else{
+            JFMenuPrincipal menuPrincipal = new JFMenuPrincipal( conexionSeguridad, conexionNegocio );
         }
     }
 
@@ -152,7 +158,8 @@ public class JFLogin extends javax.swing.JFrame {
             this.datosUsuario = UtilSeguridad.autenticarUsuario(txtUsername.getText(), txtPassword.getText(), conexionSeguridad);
             if ( datosUsuario != null )
             {
-                System.out.println("Conexion realizada correctamente, puede iniciar sesión");
+                this.dispose();
+                new JFMenuPrincipal( conexionSeguridad, conexionNegocio ).setVisible(true);
             }
             else
             {

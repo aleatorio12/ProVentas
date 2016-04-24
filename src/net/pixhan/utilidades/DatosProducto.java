@@ -17,12 +17,22 @@ package net.pixhan.utilidades;
 public class DatosProducto {
 
     private int cantidad;
-    private int precio;
+    private int alerta;
     private float descuento;
+    private float precio;
     private String nombreProducto;
+    private String descripcion;
 
-
-    public DatosProducto(int cantidad, int precio, float descuento, String nombreProducto) {
+    public DatosProducto(int cantidad, int precio, int alerta, float descuento, String nombreProducto, String descripcion) {
+        this.cantidad = cantidad;
+        this.precio = precio;
+        this.alerta = alerta;
+        this.descuento = descuento;
+        this.nombreProducto = nombreProducto;
+        this.descripcion = descripcion;
+    }
+    
+    public DatosProducto(int cantidad, float precio, float descuento, String nombreProducto ) {
         this.cantidad = cantidad;
         this.precio = precio;
         this.nombreProducto = nombreProducto;
@@ -46,14 +56,14 @@ public class DatosProducto {
     /**
      * @return the precio
      */
-    public int getPrecio() {
+    public float getPrecio() {
         return precio;
     }
 
     /**
      * @param precio the precio to set
      */
-    public void setPrecio(int precio) {
+    public void setPrecio(float precio) {
         this.precio = precio;
     }
 
@@ -84,7 +94,33 @@ public class DatosProducto {
     public void setDescuento(float descuento) {
         this.descuento = descuento;
     }
-    
 
+    /**
+     * @return the alerta
+     */
+    public int getAlerta() {
+        return alerta;
+    }
+
+    /**
+     * @param alerta the alerta to set
+     */
+    public void setAlerta(int alerta) {
+        this.alerta = alerta;
+    }
+
+    /**
+     * @return the descripcion
+     */
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    /**
+     * @param descripcion the descripcion to set
+     */
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
 }

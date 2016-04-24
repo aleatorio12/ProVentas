@@ -6,21 +6,31 @@
 package net.pixhan.proventas.vista;
 
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.pixhan.negocio.DatosClases;
+import net.pixhan.negocio.UtilNegocio;
 import net.pixhan.utilidades.ValidacionCadenas;
 
 /**
  *
  * @author Baloo
  */
-public class JFAddClaseTerciaria extends javax.swing.JFrame {
+public class JFAddClaseTercearia extends javax.swing.JFrame {
 
+    private static Connection conexionNegocio;
     private ValidacionCadenas validacion = new ValidacionCadenas();
     private static final int TAMANIO_MAX_NOMBRE_CLASE_TERCEARIA = 30;
-    private static final int TAMANIO_MAX_DESCRIPCION_CLASE_TERCEARIA = 45;    
+    private static final int TAMANIO_MAX_DESCRIPCION_CLASE_TERCEARIA = 45;
+    private static ArrayList<DatosClases> datosClases;
     /**
      * Creates new form JFAddClaseTerciaria
      */
-    public JFAddClaseTerciaria() {
+    public JFAddClaseTercearia( Connection conexionNegocio ) {
+        this.conexionNegocio = conexionNegocio;
         initComponents();
         validacion.limitarCaracteres(this.txtDescripcionClaseTercearia, this.TAMANIO_MAX_DESCRIPCION_CLASE_TERCEARIA);
         validacion.limitarCaracteres(this.txtNombreClaseTercearia, this.TAMANIO_MAX_NOMBRE_CLASE_TERCEARIA);
@@ -45,7 +55,7 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
         txtDescripcionClaseTercearia = new javax.swing.JTextField();
         btnAdd_Clase = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        cbClaseSecundaria = new javax.swing.JComboBox();
+        cbClaseSecundaria = new javax.swing.JComboBox<DatosClases>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -120,7 +130,32 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
 
     private void btnAdd_ClaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd_ClaseActionPerformed
 
-        System.out.println("Holis :D");
+        if ( !txtNombreClaseTercearia.getText().isEmpty() && !txtDescripcionClaseTercearia.getText().isEmpty() ) {        
+        
+        DatosClases datosClaseSeleccionada = (DatosClases) this.cbClaseSecundaria.getSelectedItem();
+
+        if ( datosClaseSeleccionada != null ){        
+            int idClasePrimaria = datosClaseSeleccionada.getIdClase();
+            boolean existeError = true;
+            try {
+                existeError = UtilNegocio.agregarClaseSecundaria( idClasePrimaria, this.txtNombreClaseTercearia.getText(), this.txtDescripcionClaseTercearia.getText(), null);
+                if ( existeError == true ){
+                    System.out.println("Ha ocurrido un error");
+                }
+                else{
+                    System.out.println("Sin errores");
+                }    
+            } catch (SQLException ex) {
+                Logger.getLogger(JFAddClaseSecundaria.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            System.out.println("No puede añadir. No hay nada seleccionado");
+        }
+        }else{
+            System.out.println("No soportado");
+        }
+
+        
 // TODO add your handling code here:
     }//GEN-LAST:event_btnAdd_ClaseActionPerformed
 
@@ -129,6 +164,21 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void rellenarClases(){
+        this.cbClaseSecundaria.removeAllItems();
+        int tamanio = 0;
+        //Implementacion de lo demás del código
+        try{
+            datosClases = UtilNegocio.devolverNombresClases("1", conexionNegocio );
+            tamanio = datosClases.size();
+            for ( int indice = 0; indice < tamanio; indice++ ){
+                cbClaseSecundaria.addItem( datosClases.get(indice) );
+            }
+        }catch (SQLException e){
+            e.getErrorCode();
+        }
+    }    
+    
     /**
      * @param args the command line arguments
      */
@@ -146,20 +196,21 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFAddClaseTerciaria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFAddClaseTercearia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFAddClaseTerciaria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFAddClaseTercearia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFAddClaseTerciaria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFAddClaseTercearia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFAddClaseTerciaria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFAddClaseTercearia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFAddClaseTerciaria().setVisible(true);
+                new JFAddClaseTercearia( null ).setVisible(true);
             }
         });
     }
@@ -167,7 +218,7 @@ public class JFAddClaseTerciaria extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd_Clase;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JComboBox cbClaseSecundaria;
+    private javax.swing.JComboBox<DatosClases> cbClaseSecundaria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

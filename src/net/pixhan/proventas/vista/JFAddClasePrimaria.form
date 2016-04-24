@@ -41,8 +41,8 @@
                           </Group>
                       </Group>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="txtNombreArea" alignment="0" pref="135" max="32767" attributes="0"/>
-                          <Component id="txtDescripcion" alignment="0" max="32767" attributes="0"/>
+                          <Component id="txtNombreClasePrimaria" alignment="0" pref="135" max="32767" attributes="0"/>
+                          <Component id="txtDescripcionClasePrimaria" alignment="0" max="32767" attributes="0"/>
                           <Component id="cbAreaNegocio" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -67,12 +67,12 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtNombreArea" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtNombreClasePrimaria" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtDescripcion" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtDescripcionClasePrimaria" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -104,6 +104,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="A&#xf1;adir Area"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAdd_ClaseActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnCancelar">
       <Properties>
@@ -113,9 +116,9 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtNombreArea">
+    <Component class="javax.swing.JTextField" name="txtNombreClasePrimaria">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtDescripcion">
+    <Component class="javax.swing.JTextField" name="txtDescripcionClasePrimaria">
     </Component>
     <Component class="javax.swing.JComboBox" name="cbAreaNegocio">
       <Properties>
@@ -123,6 +126,12 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbAreaNegocioActionPerformed"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DatosClases&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

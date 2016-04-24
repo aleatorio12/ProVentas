@@ -5,6 +5,11 @@
  */
 package net.pixhan.proventas.vista;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.pixhan.negocio.UtilNegocio;
 import net.pixhan.utilidades.ValidacionCadenas;
 
 /**
@@ -13,13 +18,15 @@ import net.pixhan.utilidades.ValidacionCadenas;
  */
 public class JFAddAreaNegocio extends javax.swing.JFrame {
     
+    private static Connection conexionNegocio;
     private ValidacionCadenas validacion = new ValidacionCadenas();
     private static final int TAMANIO_MAX_NOMBRE_AREANEGOCIO = 30;
     private static final int TAMANIO_MAX_DESCRIP_AREANEGOCIO = 45;
     /**
      * Creates new form JFAddAreaNegocio
      */
-    public JFAddAreaNegocio() {
+    public JFAddAreaNegocio( Connection conexionNegocio ) {
+        this.conexionNegocio = conexionNegocio;
         initComponents();
         validacion.limitarCaracteres(txtNombre, this.TAMANIO_MAX_NOMBRE_AREANEGOCIO);
         validacion.limitarCaracteres(txtDescripcion, this.TAMANIO_MAX_DESCRIP_AREANEGOCIO);
@@ -56,6 +63,11 @@ public class JFAddAreaNegocio extends javax.swing.JFrame {
         });
 
         btnAceptar.setText("Añadir Area");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -116,6 +128,32 @@ public class JFAddAreaNegocio extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        if ( !txtNombre.getText().isEmpty() && !txtDescripcion.getText().isEmpty() ) {
+            try {
+                // TODO add your handling code here:
+                boolean existeError = true;
+                existeError = UtilNegocio.agregarAreaNegocio(
+                        this.txtNombre.getText(),
+                        this.txtDescripcion.getText(),
+                        conexionNegocio);
+                if ( existeError == true ){
+                    System.out.println("Ha ocurrido un error");
+                }
+                else{
+                    this.txtNombre.setText(null);
+                    this.txtDescripcion.setText(null);
+                    System.out.println("Operacion realizada con exito");
+                    this.dispose();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JFAddAreaNegocio.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            System.out.println("Operacion no admitida");
+        }
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -146,7 +184,7 @@ public class JFAddAreaNegocio extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFAddAreaNegocio().setVisible(true);
+                new JFAddAreaNegocio( null ).setVisible(true);
             }
         });
     }

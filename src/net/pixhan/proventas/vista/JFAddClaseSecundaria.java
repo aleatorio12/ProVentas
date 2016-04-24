@@ -5,7 +5,9 @@
  */
 package net.pixhan.proventas.vista;
 
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -19,21 +21,24 @@ import net.pixhan.utilidades.ValidacionCadenas;
  */
 public class JFAddClaseSecundaria extends javax.swing.JFrame {
 
+    private static Connection conexionNegocio;
     private ValidacionCadenas validacion = new ValidacionCadenas();
     private static final int TAMANIO_MAX_CLASEPRIMARIA_CLASESECUNDARIA = 3;
     private static final int TAMANIO_MAX_NOMBREDEAREA_CLASESECUNDARIA = 30;
     private static final int TAMANIO_MAX_DESCRIPCION_CLASESECUNDARIA = 45;
+    private static ArrayList<DatosClases> datosClases;
     
     /**
      * Creates new form JFAddClaseSecundaria
      */
-    public JFAddClaseSecundaria() {
+    public JFAddClaseSecundaria( Connection conexionNegocio ) {
+        this.conexionNegocio = conexionNegocio;
         initComponents();
-        validacion.limitarCaracteres(txtNombreArea, this.TAMANIO_MAX_NOMBREDEAREA_CLASESECUNDARIA);
-        validacion.limitarCaracteres(txtDescripcion, this.TAMANIO_MAX_DESCRIPCION_CLASESECUNDARIA);
+        validacion.limitarCaracteres(txtNombreClaseSecundaria, this.TAMANIO_MAX_NOMBREDEAREA_CLASESECUNDARIA);
+        validacion.limitarCaracteres(txtDescripcionClaseSecundaria, this.TAMANIO_MAX_DESCRIPCION_CLASESECUNDARIA);
         //validacion.validarSoloNumeros(cbClaseprimaria, this.TAMANIO_MAX_CLASEPRIMARIA_CLASESECUNDARIA);
-        validacion.validarSoloLetras(txtDescripcion);
-        validacion.validarSoloLetras(txtNombreArea);
+        validacion.validarSoloLetras(txtDescripcionClaseSecundaria);
+        validacion.validarSoloLetras(txtNombreClaseSecundaria);
         rellenarClases();
         
         
@@ -53,9 +58,9 @@ public class JFAddClaseSecundaria extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         btnAdd_Clase_Secundario = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        txtNombreArea = new javax.swing.JTextField();
-        txtDescripcion = new javax.swing.JTextField();
-        cbClaseprimaria = new javax.swing.JComboBox<DatosClases>();
+        txtNombreClaseSecundaria = new javax.swing.JTextField();
+        txtDescripcionClaseSecundaria = new javax.swing.JTextField();
+        cbClasePrimaria = new javax.swing.JComboBox<DatosClases>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,16 +84,16 @@ public class JFAddClaseSecundaria extends javax.swing.JFrame {
             }
         });
 
-        txtNombreArea.addActionListener(new java.awt.event.ActionListener() {
+        txtNombreClaseSecundaria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombreAreaActionPerformed(evt);
+                txtNombreClaseSecundariaActionPerformed(evt);
             }
         });
 
-        cbClaseprimaria.setMaximumRowCount(15);
-        cbClaseprimaria.addActionListener(new java.awt.event.ActionListener() {
+        cbClasePrimaria.setMaximumRowCount(15);
+        cbClasePrimaria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbClaseprimariaActionPerformed(evt);
+                cbClasePrimariaActionPerformed(evt);
             }
         });
 
@@ -110,9 +115,9 @@ public class JFAddClaseSecundaria extends javax.swing.JFrame {
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cbClaseprimaria, 0, 130, Short.MAX_VALUE)
-                            .addComponent(txtNombreArea)
-                            .addComponent(txtDescripcion))))
+                            .addComponent(cbClasePrimaria, 0, 130, Short.MAX_VALUE)
+                            .addComponent(txtNombreClaseSecundaria)
+                            .addComponent(txtDescripcionClaseSecundaria))))
                 .addContainerGap(91, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -121,15 +126,15 @@ public class JFAddClaseSecundaria extends javax.swing.JFrame {
                 .addGap(54, 54, 54)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(cbClaseprimaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbClasePrimaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtNombreArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombreClaseSecundaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDescripcionClaseSecundaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(62, 62, 62)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd_Clase_Secundario)
@@ -140,31 +145,39 @@ public class JFAddClaseSecundaria extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNombreAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreAreaActionPerformed
+    private void txtNombreClaseSecundariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreClaseSecundariaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNombreAreaActionPerformed
+    }//GEN-LAST:event_txtNombreClaseSecundariaActionPerformed
 
-    private void cbClaseprimariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbClaseprimariaActionPerformed
+    private void cbClasePrimariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbClasePrimariaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbClaseprimariaActionPerformed
+    }//GEN-LAST:event_cbClasePrimariaActionPerformed
 
     private void btnAdd_Clase_SecundarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd_Clase_SecundarioActionPerformed
         // TODO add your handling code here:
-        DatosClases datosClaseSeleccionada = (DatosClases) this.cbClaseprimaria.getSelectedItem();
-        int idClasePrimaria = datosClaseSeleccionada.getIdClase();
-        boolean existeError = true;
-        try {
-            existeError = UtilNegocio.agregarClaseSecundaria( idClasePrimaria, this.txtNombreArea.getText(), this.txtDescripcion.getText(), null);
-            if ( existeError == true ){
-                System.out.println("Ha ocurrido un error");
+        DatosClases datosClaseSeleccionada = (DatosClases) this.cbClasePrimaria.getSelectedItem();
+
+        if ( !this.txtNombreClaseSecundaria.getText().isEmpty() && !this.txtDescripcionClaseSecundaria.getText().isEmpty() ) {        
+        
+        if ( datosClaseSeleccionada != null ){        
+            int idClasePrimaria = datosClaseSeleccionada.getIdClase();
+            boolean existeError = true;
+            try {
+                existeError = UtilNegocio.agregarClaseSecundaria( idClasePrimaria, this.txtNombreClaseSecundaria.getText(), this.txtDescripcionClaseSecundaria.getText(), null);
+                if ( existeError == true ){
+                    System.out.println("Ha ocurrido un error");
+                }
+                else{
+                    System.out.println("Sin errores");
+                }    
+            } catch (SQLException ex) {
+                Logger.getLogger(JFAddClaseSecundaria.class.getName()).log(Level.SEVERE, null, ex);
             }
-            else{
-                System.out.println("Sin errores");
-            }
-               
-                
-        } catch (SQLException ex) {
-            Logger.getLogger(JFAddClaseSecundaria.class.getName()).log(Level.SEVERE, null, ex);
+        }else{
+            System.out.println("No puede añadir. No hay nada seleccionado");
+        }
+        }else{
+            System.out.println("Operacion no permitida");
         }
 
     }//GEN-LAST:event_btnAdd_Clase_SecundarioActionPerformed
@@ -175,9 +188,19 @@ public class JFAddClaseSecundaria extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void rellenarClases(){
-        this.cbClaseprimaria.removeAllItems();
+        this.cbClasePrimaria.removeAllItems();
+        int tamanio = 0;
+        String nombreClase;
         //Implementacion de lo demás del código
-        this.cbClaseprimaria.addItem(null);
+        try{
+            datosClases = UtilNegocio.devolverNombresClases("1", conexionNegocio );
+            tamanio = datosClases.size();
+            for ( int indice = 0; indice < tamanio; indice++ ){
+                cbClasePrimaria.addItem( datosClases.get(indice) );
+            }
+        }catch (SQLException e){
+            e.getErrorCode();
+        }
     }
     
     /**
@@ -210,7 +233,7 @@ public class JFAddClaseSecundaria extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFAddClaseSecundaria().setVisible(true);
+                new JFAddClaseSecundaria( null ).setVisible(true);
             }
         });
     }
@@ -218,11 +241,11 @@ public class JFAddClaseSecundaria extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd_Clase_Secundario;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JComboBox<DatosClases> cbClaseprimaria;
+    private javax.swing.JComboBox<DatosClases> cbClasePrimaria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtDescripcion;
-    private javax.swing.JTextField txtNombreArea;
+    private javax.swing.JTextField txtDescripcionClaseSecundaria;
+    private javax.swing.JTextField txtNombreClaseSecundaria;
     // End of variables declaration//GEN-END:variables
 }

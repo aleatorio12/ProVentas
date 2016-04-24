@@ -5,6 +5,13 @@
  */
 package net.pixhan.proventas.vista;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.pixhan.negocio.DatosClases;
+import net.pixhan.negocio.UtilNegocio;
 import net.pixhan.utilidades.ValidacionCadenas;
 
 /**
@@ -13,19 +20,22 @@ import net.pixhan.utilidades.ValidacionCadenas;
  */
 public class JFAddClasePrimaria extends javax.swing.JFrame {
 
+    private static Connection conexionNegocio;
     private ValidacionCadenas validacion = new ValidacionCadenas();
     private static final int TAMANIO_MAX_NOMBRE_CLASE_PRIMARIA = 30;
     private static final int TAMANIO_MAX_DESCRIPCION_CLASE_PRIMARIA = 45;
+    private static ArrayList<DatosClases> datosClases;
     
     /**
      * Creates new form JFAddClasePrimaria
      */
-    public JFAddClasePrimaria() {
+    public JFAddClasePrimaria( Connection conexionNegocio ) {
+        this.conexionNegocio = conexionNegocio;
         initComponents();
-        validacion.limitarCaracteres(txtDescripcion, this.TAMANIO_MAX_DESCRIPCION_CLASE_PRIMARIA);
-        validacion.limitarCaracteres(txtNombreArea, this.TAMANIO_MAX_NOMBRE_CLASE_PRIMARIA);
-        validacion.validarSoloLetras(txtDescripcion);
-        validacion.validarSoloLetras(txtNombreArea);
+        validacion.limitarCaracteres(txtDescripcionClasePrimaria, this.TAMANIO_MAX_DESCRIPCION_CLASE_PRIMARIA);
+        validacion.limitarCaracteres(txtNombreClasePrimaria, this.TAMANIO_MAX_NOMBRE_CLASE_PRIMARIA);
+        validacion.validarSoloLetras(txtDescripcionClasePrimaria);
+        validacion.validarSoloLetras(txtNombreClasePrimaria);
     }
 
     /**
@@ -42,9 +52,9 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         btnAdd_Clase = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        txtNombreArea = new javax.swing.JTextField();
-        txtDescripcion = new javax.swing.JTextField();
-        cbAreaNegocio = new javax.swing.JComboBox();
+        txtNombreClasePrimaria = new javax.swing.JTextField();
+        txtDescripcionClasePrimaria = new javax.swing.JTextField();
+        cbAreaNegocio = new javax.swing.JComboBox<DatosClases>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,11 +65,22 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
         jLabel3.setText("Descripción");
 
         btnAdd_Clase.setText("Añadir Area");
+        btnAdd_Clase.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdd_ClaseActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
+            }
+        });
+
+        cbAreaNegocio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbAreaNegocioActionPerformed(evt);
             }
         });
 
@@ -81,8 +102,8 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
                                 .addComponent(jLabel1)
                                 .addGap(47, 47, 47)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtNombreArea, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNombreClasePrimaria, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                            .addComponent(txtDescripcionClasePrimaria, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbAreaNegocio, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnAdd_Clase)
@@ -100,11 +121,11 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtNombreArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombreClasePrimaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDescripcionClasePrimaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(58, 58, 58)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd_Clase)
@@ -120,6 +141,57 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void cbAreaNegocioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAreaNegocioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbAreaNegocioActionPerformed
+
+    private void btnAdd_ClaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd_ClaseActionPerformed
+        // TODO add your handling code here:
+
+        if ( !txtNombreClasePrimaria.getText().isEmpty() && !txtDescripcionClasePrimaria.getText().isEmpty() ) {
+        
+        DatosClases datosClaseSeleccionada = (DatosClases) this.cbAreaNegocio.getSelectedItem();
+
+        if ( datosClaseSeleccionada != null ){
+            int idClasePrimaria = datosClaseSeleccionada.getIdClase();
+            boolean existeError = true;
+            try {
+                existeError = UtilNegocio.agregarClaseSecundaria( idClasePrimaria, this.txtNombreClasePrimaria.getText(), this.txtDescripcionClasePrimaria.getText(), null);
+                if ( existeError == true ){
+                    System.out.println("Ha ocurrido un error");
+                }
+                else{
+                    System.out.println("Sin errores");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(JFAddClaseSecundaria.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            System.out.println("No se puede realizar la accion. No hay nada seleccionado");
+        }
+        }else{
+            System.out.println("Operacion no admitida");
+        }
+
+    }//GEN-LAST:event_btnAdd_ClaseActionPerformed
+
+    private void rellenarClases(){
+        this.cbAreaNegocio.removeAllItems();
+        int tamanio = 0;
+        String nombreClase;
+        //Implementacion de lo demás del código
+        try{
+            datosClases = UtilNegocio.devolverNombresClases("a", conexionNegocio );
+            tamanio = datosClases.size();
+            for ( int indice = 0; indice < tamanio; indice++ ){
+                cbAreaNegocio.addItem( datosClases.get(indice) );
+            }
+        }catch (SQLException e){
+            e.getErrorCode();
+        }
+
+    }
     /**
      * @param args the command line arguments
      */
@@ -150,7 +222,7 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFAddClasePrimaria().setVisible(true);
+                new JFAddClasePrimaria( null ).setVisible(true);
             }
         });
     }
@@ -158,11 +230,11 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd_Clase;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JComboBox cbAreaNegocio;
+    private javax.swing.JComboBox<DatosClases> cbAreaNegocio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtDescripcion;
-    private javax.swing.JTextField txtNombreArea;
+    private javax.swing.JTextField txtDescripcionClasePrimaria;
+    private javax.swing.JTextField txtNombreClasePrimaria;
     // End of variables declaration//GEN-END:variables
 }
