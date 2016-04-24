@@ -166,7 +166,7 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
                 else{
                     System.out.println("Sin errores");
                 }
-            } catch (SQLException ex) {
+            } catch (SQLException ex ) {
                 Logger.getLogger(JFAddClasePrimaria.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -176,7 +176,6 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
         }else{
             System.out.println("Operacion no admitida");
         }
-
     }//GEN-LAST:event_btnAdd_ClaseActionPerformed
 
     private void rellenarClases(){
