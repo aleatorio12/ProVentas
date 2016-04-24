@@ -24,6 +24,11 @@ public class DatosClases {
         this.idClase = idClase;
     }
 
+    @Override
+    public String toString(){
+        return nombreClase;
+    }
+    
     /**
      * @return the nombreClase
      */

@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import net.pixhan.utilidades.DatosProducto;
 
@@ -56,27 +58,24 @@ public class UtilNegocio {
     
     public static boolean agregarClasePrimaria ( int areaNegocio, String nombre, String descripcion, Connection conexion ) throws SQLException
     {
-
         int ocurreError;
-        
+            
         CallableStatement cstmt =  conexion.prepareCall("{call punto_venta.agregarClasePrimaria(?, ?, ?, ?)}");
             
         cstmt.setInt("areaNegocio", areaNegocio);
         cstmt.setString("nombre", nombre);
         cstmt.setString("descripcion", descripcion);
         cstmt.registerOutParameter("existeError", java.sql.Types.TINYINT);
-        
-        cstmt.execute();
-
-        ocurreError = cstmt.getInt("existeError");
- 
-        cstmt.close();
-        
-        if ( ocurreError == SIN_ERROR )
-        {
-
-            return true;
             
+        cstmt.execute();
+            
+        ocurreError = cstmt.getInt("existeError");
+            
+        cstmt.close();
+            
+        if ( ocurreError == SIN_ERROR )
+        {               
+            return true;        
         }
 
         return false;
@@ -447,9 +446,9 @@ public class UtilNegocio {
      */
     public static ArrayList<DatosClases> devolverNombresClases ( String tipo, Connection conexion ) throws SQLException
     {
-        ArrayList<DatosClases> datosClases = null;
-        DatosClases datos = null;
-        CallableStatement cstmt =  conexion.prepareCall("{call punto_venta.devolverNombres( ? )}");
+        ArrayList<DatosClases> datosClases = new ArrayList<DatosClases>();
+        try{  
+        CallableStatement cstmt =  conexion.prepareCall("{call punto_venta.devolverNombresClases( ? )}");
 
         cstmt.setString("tipo", tipo);        
         cstmt.execute();
@@ -457,14 +456,17 @@ public class UtilNegocio {
         final ResultSet rs = cstmt.getResultSet();
         
         while ( rs.next() ){
-
-            datos.setIdClase(rs.getInt("ID"));
-            datos.setNombreClase(rs.getString("NOMBRE"));
+            DatosClases datos = new DatosClases( rs.getString("NOMBRE"), rs.getInt("ID") );
+            System.out.println( rs.getString("NOMBRE") );
+            System.out.println( rs.getInt("ID") );
             datosClases.add(datos);            
         }
         
         cstmt.close();
 
+        }catch(SQLException e){
+            System.out.println( e.getErrorCode() );
+        }
         return datosClases;
     }    
     

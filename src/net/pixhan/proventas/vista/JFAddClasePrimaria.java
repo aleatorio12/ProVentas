@@ -36,6 +36,7 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
         validacion.limitarCaracteres(txtNombreClasePrimaria, this.TAMANIO_MAX_NOMBRE_CLASE_PRIMARIA);
         validacion.validarSoloLetras(txtDescripcionClasePrimaria);
         validacion.validarSoloLetras(txtNombreClasePrimaria);
+        rellenarClases();
     }
 
     /**
@@ -149,14 +150,16 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         if ( !txtNombreClasePrimaria.getText().isEmpty() && !txtDescripcionClasePrimaria.getText().isEmpty() ) {
-        
+
         DatosClases datosClaseSeleccionada = (DatosClases) this.cbAreaNegocio.getSelectedItem();
 
         if ( datosClaseSeleccionada != null ){
-            int idClasePrimaria = datosClaseSeleccionada.getIdClase();
-            boolean existeError = true;
             try {
-                existeError = UtilNegocio.agregarClaseSecundaria( idClasePrimaria, this.txtNombreClasePrimaria.getText(), this.txtDescripcionClasePrimaria.getText(), null);
+                int idAreaNegocio = datosClaseSeleccionada.getIdClase();
+                System.out.print("Aquí va la comprobación: ");
+                System.out.println(idAreaNegocio);
+                boolean existeError = true;
+                existeError = UtilNegocio.agregarClasePrimaria( idAreaNegocio, this.txtNombreClasePrimaria.getText(), this.txtDescripcionClasePrimaria.getText(), null);
                 if ( existeError == true ){
                     System.out.println("Ha ocurrido un error");
                 }
@@ -164,7 +167,7 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
                     System.out.println("Sin errores");
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(JFAddClaseSecundaria.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(JFAddClasePrimaria.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         else{
@@ -186,6 +189,7 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
             tamanio = datosClases.size();
             for ( int indice = 0; indice < tamanio; indice++ ){
                 cbAreaNegocio.addItem( datosClases.get(indice) );
+                System.out.println( datosClases.get(indice).getNombreClase() );
             }
         }catch (SQLException e){
             e.getErrorCode();
