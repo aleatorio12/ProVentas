@@ -163,12 +163,13 @@ public class JFAddClaseSecundaria extends javax.swing.JFrame {
             int idClasePrimaria = datosClaseSeleccionada.getIdClase();
             boolean existeError = true;
             try {
-                existeError = UtilNegocio.agregarClaseSecundaria( idClasePrimaria, this.txtNombreClaseSecundaria.getText(), this.txtDescripcionClaseSecundaria.getText(), null);
+                existeError = UtilNegocio.agregarClaseSecundaria( idClasePrimaria, this.txtNombreClaseSecundaria.getText(), this.txtDescripcionClaseSecundaria.getText(), conexionNegocio);
                 if ( existeError == true ){
                     System.out.println("Ha ocurrido un error");
                 }
                 else{
                     System.out.println("Sin errores");
+                    this.dispose();
                 }    
             } catch (SQLException ex) {
                 Logger.getLogger(JFAddClaseSecundaria.class.getName()).log(Level.SEVERE, null, ex);

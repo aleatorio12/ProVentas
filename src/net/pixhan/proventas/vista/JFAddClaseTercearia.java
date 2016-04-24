@@ -37,6 +37,7 @@ public class JFAddClaseTercearia extends javax.swing.JFrame {
         validacion.validarSoloLetras(this.txtDescripcionClaseTercearia);
         validacion.validarSoloLetras(this.txtNombreClaseTercearia);
         this.btnAdd_Clase.setMnemonic(KeyEvent.VK_ENTER);
+        rellenarClases();
     }
 
     /**
@@ -138,12 +139,13 @@ public class JFAddClaseTercearia extends javax.swing.JFrame {
             int idClasePrimaria = datosClaseSeleccionada.getIdClase();
             boolean existeError = true;
             try {
-                existeError = UtilNegocio.agregarClaseSecundaria( idClasePrimaria, this.txtNombreClaseTercearia.getText(), this.txtDescripcionClaseTercearia.getText(), null);
+                existeError = UtilNegocio.agregarClaseTercearia( idClasePrimaria, this.txtNombreClaseTercearia.getText(), this.txtDescripcionClaseTercearia.getText(), conexionNegocio);
                 if ( existeError == true ){
                     System.out.println("Ha ocurrido un error");
                 }
                 else{
                     System.out.println("Sin errores");
+                    this.dispose();
                 }    
             } catch (SQLException ex) {
                 Logger.getLogger(JFAddClaseSecundaria.class.getName()).log(Level.SEVERE, null, ex);
@@ -169,7 +171,7 @@ public class JFAddClaseTercearia extends javax.swing.JFrame {
         int tamanio = 0;
         //Implementacion de lo demás del código
         try{
-            datosClases = UtilNegocio.devolverNombresClases("1", conexionNegocio );
+            datosClases = UtilNegocio.devolverNombresClases("2", conexionNegocio );
             tamanio = datosClases.size();
             for ( int indice = 0; indice < tamanio; indice++ ){
                 cbClaseSecundaria.addItem( datosClases.get(indice) );

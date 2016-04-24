@@ -159,12 +159,13 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
                 System.out.print("Aquí va la comprobación: ");
                 System.out.println(idAreaNegocio);
                 boolean existeError = true;
-                existeError = UtilNegocio.agregarClasePrimaria( idAreaNegocio, this.txtNombreClasePrimaria.getText(), this.txtDescripcionClasePrimaria.getText(), null);
-                if ( existeError == true ){
-                    System.out.println("Ha ocurrido un error");
+                existeError = UtilNegocio.agregarClasePrimaria( idAreaNegocio, this.txtNombreClasePrimaria.getText(), this.txtDescripcionClasePrimaria.getText(), conexionNegocio);
+                if ( existeError == false ){
+                    System.out.println("Operacion realizada con exito");
+                    this.dispose();
                 }
                 else{
-                    System.out.println("Sin errores");
+                    System.out.println("Ha ocurrido un error");
                 }
             } catch (SQLException ex ) {
                 Logger.getLogger(JFAddClasePrimaria.class.getName()).log(Level.SEVERE, null, ex);

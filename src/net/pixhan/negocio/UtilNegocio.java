@@ -48,11 +48,11 @@ public class UtilNegocio {
         if ( ocurreError == SIN_ERROR )
         {
 
-            return true;
+            return false;
             
         }
 
-        return false;
+        return true;
         
     }
     
@@ -75,10 +75,10 @@ public class UtilNegocio {
             
         if ( ocurreError == SIN_ERROR )
         {               
-            return true;        
+            return false;        
         }
 
-        return false;
+        return true;
         
     }
 
@@ -103,11 +103,11 @@ public class UtilNegocio {
         if ( ocurreError == SIN_ERROR )
         {
 
-            return true;
+            return false;
             
         }
 
-        return false;
+        return true;
         
     }
     
@@ -132,11 +132,11 @@ public class UtilNegocio {
         if ( ocurreError == SIN_ERROR )
         {
 
-            return true;
+            return false;
             
         }
 
-        return false;
+        return true;
         
     }
 
@@ -187,11 +187,11 @@ public class UtilNegocio {
         if ( ocurreError == SIN_ERROR )
         {
 
-            return true;
+            return false;
             
         }
 
-        return false;
+        return true;
         
     }    
 
@@ -216,11 +216,11 @@ public class UtilNegocio {
         if ( ocurreError == SIN_ERROR )
         {
 
-            return true;
+            return false;
             
         }
 
-        return false;
+        return true;
         
     }    
 
@@ -244,11 +244,11 @@ public class UtilNegocio {
         if ( ocurreError == SIN_ERROR )
         {
 
-            return true;
+            return false;
             
         }
 
-        return false;
+        return true;
         
     }
 
@@ -274,11 +274,11 @@ public class UtilNegocio {
         if ( ocurreError == SIN_ERROR )
         {
 
-            return true;
+            return false;
             
         }
 
-        return false;
+        return true;
         
     }    
 
@@ -304,11 +304,11 @@ public class UtilNegocio {
             if ( ocurreError == SIN_ERROR )
             {
 
-                return true;
+                return false;
             
             }
         }
-        return false;
+        return true;
         
     }    
 
@@ -333,11 +333,11 @@ public class UtilNegocio {
         if ( ocurreError == SIN_ERROR )
         {
 
-            return true;
+            return false;
             
         }
 
-        return false;
+        return true;
         
     }    
     
@@ -395,11 +395,11 @@ public class UtilNegocio {
         if ( ocurreError == SIN_ERROR )
         {
 
-            return true;
+            return false;
             
         }
 
-        return false;
+        return true;
     }    
 
     public static DatosProducto cargarDatosProducto ( int producto, Connection conexion ) throws SQLException
