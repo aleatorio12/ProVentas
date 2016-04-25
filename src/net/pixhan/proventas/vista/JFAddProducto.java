@@ -5,7 +5,20 @@
  */
 package net.pixhan.proventas.vista;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComboBox;
+import javax.swing.table.DefaultTableModel;
 import net.pixhan.negocio.DatosClases;
+import net.pixhan.negocio.UtilNegocio;
+import net.pixhan.utilidades.DatosUsuario;
+import net.pixhan.utilidades.ModificadorCadenas;
+import net.pixhan.utilidades.ValidacionCadenas;
 
 /**
  *
@@ -13,11 +26,51 @@ import net.pixhan.negocio.DatosClases;
  */
 public class JFAddProducto extends javax.swing.JFrame {
 
+    private Connection conexionNegocio;
+    private static ArrayList<DatosClases> datosAreasNegocios;
+    private static ArrayList<DatosClases> datosClasePrimaria;
+    private static ArrayList<DatosClases> datosClaseSecundaria;
+    private static ArrayList<DatosClases> datosClaseTercearia;
+    private ValidacionCadenas validacion = new ValidacionCadenas();
+    private DatosUsuario datosUsuario;
+    private static final int TAMANIO_MAX_NOMBRE_PRODUCTO = 30;
+    private static final int TAMANIO_MAX_DESCRIPCION_PRODUCTO = 45;
+    private static final int INDEX_CODIGO_PRODUCTO = 0;
+    private static final int INDEX_NOMBRE_PRODUCTO = 1;
+    private static final int INDEX_DESCRIPCION_PRODUCTO = 2;
+    private static final int INDEX_EXISTENCIA = 3;
+    private static final int INDEX_COSTO = 4;
+    private static final int INDEX_PRECIO_VENTA = 5;
+    private static final int INDEX_DESCUENTO = 6;
+    private static final int INDEX_NIVEL_ALERTA = 7;
+    private static final int INDEX_FABRICANTE = 8;
+    private static final int INDEX_AREA_NEGOCIO = 9;
+    private static final int INDEX_CLASE_PRIMARIA = 10;
+    private static final int INDEX_CLASE_SECUNDARIA = 11;
+    private static final int INDEX_CLASE_TERCEARIA = 12;
+    
+    
     /**
      * Creates new form JFAddProducto
      */
-    public JFAddProducto() {
+    public JFAddProducto( Connection conexionNegocio, DatosUsuario datosUsuario ) {
+        this.conexionNegocio = conexionNegocio;
+        this.datosUsuario = datosUsuario;
         initComponents();
+        validacion.limitarCaracteres(this.txtNombreProducto, TAMANIO_MAX_NOMBRE_PRODUCTO);
+        validacion.limitarCaracteres(this.txtDescripcion, TAMANIO_MAX_DESCRIPCION_PRODUCTO);
+        validacion.limitarCaracteres(this.txtFabricante, TAMANIO_MAX_NOMBRE_PRODUCTO);
+        validacion.validarSoloLetras(this.txtNombreProducto);
+        validacion.validarSoloLetras(this.txtDescripcion);
+        validacion.validarSoloLetras(this.txtFabricante);
+        validacion.validarSoloNumeros(this.txtDescuento);
+        validacion.validarSoloNumeros(this.txtNivelAlerta);
+        validacion.validarSoloNumeros(this.txtExistencia);
+        validacion.validarNumerosYPuntos(this.txtCodigoProducto);
+        validacion.validarNumerosYPuntos(this.txtCosto);
+        validacion.validarNumerosYPuntos(this.txtPrecioVenta);
+        rellenarClaseAreaNegocio();
+        
     }
 
     /**
@@ -29,70 +82,56 @@ public class JFAddProducto extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
+        txtCodigoProducto = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txtNombreProducto = new javax.swing.JTextField();
+        txtDescripcion = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtExistencia = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtCosto = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtPrecioVenta = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
+        txtNivelAlerta = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
+        txtFabricante = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<DatosClases>();
-        jComboBox2 = new javax.swing.JComboBox<DatosClases>();
-        jComboBox3 = new javax.swing.JComboBox<DatosClases>();
-        jComboBox4 = new javax.swing.JComboBox<DatosClases>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        cbAreaNegocio = new javax.swing.JComboBox<DatosClases>();
+        cbClasePrimaria = new javax.swing.JComboBox<DatosClases>();
+        cbClaseSecundaria = new javax.swing.JComboBox<DatosClases>();
+        cbClaseTercearia = new javax.swing.JComboBox<DatosClases>();
+        btnAddProducto = new javax.swing.JButton();
+        btnProcesarProductos = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblProductos = new javax.swing.JTable();
         jLabel13 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
+        txtDescuento = new javax.swing.JTextField();
+        btnCancelSingleProduct = new javax.swing.JButton();
+        btnCancelarTodo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jTextField1.setText("jTextField1");
 
         jLabel1.setText("Código Producto:");
 
         jLabel2.setText("Nombre Producto:");
 
-        jTextField2.setText("jTextField2");
-
-        jTextField3.setText("jTextField3");
-
         jLabel3.setText("Descripción:");
 
         jLabel4.setText("Existencia:");
 
-        jTextField4.setText("jTextField4");
-
         jLabel5.setText("Costo:");
-
-        jTextField5.setText("jTextField5");
 
         jLabel6.setText("Precio Venta:");
 
-        jTextField6.setText("jTextField6");
-
         jLabel7.setText("Nivel de alerta:");
 
-        jTextField7.setText("jTextField7");
-
         jLabel8.setText("Fabricante:");
-
-        jTextField8.setText("jTextField8");
 
         jLabel9.setText("Área Negocio:");
 
@@ -102,11 +141,27 @@ public class JFAddProducto extends javax.swing.JFrame {
 
         jLabel12.setText("Clase Tercearia:");
 
-        jButton1.setText("Agregar Producto");
+        cbAreaNegocio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbAreaNegocioActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Añadir Productos");
+        btnAddProducto.setText("Agregar Producto");
+        btnAddProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddProductoActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        btnProcesarProductos.setText("Procesar Productos");
+        btnProcesarProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProcesarProductosActionPerformed(evt);
+            }
+        });
+
+        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -115,7 +170,7 @@ public class JFAddProducto extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false, false, false, false, false, false
@@ -129,11 +184,23 @@ public class JFAddProducto extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblProductos);
 
         jLabel13.setText("Descuento:");
 
-        jTextField9.setText("jTextField9");
+        btnCancelSingleProduct.setText("Cancelar");
+        btnCancelSingleProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelSingleProductActionPerformed(evt);
+            }
+        });
+
+        btnCancelarTodo.setText("Cancelar Todo");
+        btnCancelarTodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarTodoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -152,11 +219,11 @@ public class JFAddProducto extends javax.swing.JFrame {
                             .addComponent(jLabel11))
                         .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField7)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtCodigoProducto)
+                            .addComponent(txtExistencia)
+                            .addComponent(txtNivelAlerta)
+                            .addComponent(cbAreaNegocio, 0, 120, Short.MAX_VALUE)
+                            .addComponent(cbClaseSecundaria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -166,34 +233,35 @@ public class JFAddProducto extends javax.swing.JFrame {
                             .addComponent(jLabel10))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                            .addComponent(jTextField5)
-                            .addComponent(jTextField8)
-                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtNombreProducto)
+                            .addComponent(txtCosto)
+                            .addComponent(txtFabricante)
+                            .addComponent(cbClasePrimaria, 0, 130, Short.MAX_VALUE)
+                            .addComponent(cbClaseTercearia, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel13)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtDescuento))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel6)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtPrecioVenta))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel13)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextField9))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jTextField6))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 322, Short.MAX_VALUE))
+                                .addComponent(btnAddProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(btnCancelSingleProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 227, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnCancelarTodo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnProcesarProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -201,55 +269,302 @@ public class JFAddProducto extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNivelAlerta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFabricante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
                             .addComponent(jLabel10)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(cbAreaNegocio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbClasePrimaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
                             .addComponent(jLabel12)
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(jButton1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(cbClaseSecundaria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbClaseTercearia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnAddProducto)
+                            .addComponent(btnCancelSingleProduct))
+                        .addGap(20, 20, 20)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnProcesarProductos)
+                    .addComponent(btnCancelarTodo))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cbAreaNegocioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAreaNegocioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbAreaNegocioActionPerformed
+
+    private void btnAddProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductoActionPerformed
+        // TODO add your handling code here:
+        DatosClases areaNeg;
+        DatosClases clasePrim;
+        DatosClases claseSec;
+        DatosClases claseTerc;
+        
+        if ( !this.txtCodigoProducto.getText().isEmpty() &&
+                !this.txtCosto.getText().isEmpty() &&
+                !this.txtNombreProducto.getText().isEmpty() &&
+                !this.txtExistencia.getText().isEmpty() &&
+                !this.txtNivelAlerta.getText().isEmpty() &&
+                !this.txtPrecioVenta.getText().isEmpty() &&
+                !this.txtDescuento.getText().isEmpty() &&
+                this.cbAreaNegocio.getSelectedItem() != null &&
+                this.cbClasePrimaria.getSelectedItem() != null &&
+                this.cbClaseSecundaria.getSelectedObjects() != null &&
+                this.cbClaseTercearia.getSelectedItem() != null
+            ){
+
+            //areaNeg = (DatosClases) cbAreaNegocio.getSelectedItem();
+            //clasePrim = ( DatosClases ) cbClasePrimaria.getSelectedItem();
+            //claseSec = ( DatosClases ) cbClaseSecundaria.getSelectedItem();
+            //claseTerc = ( DatosClases ) cbClaseTercearia.getSelectedItem();
+            
+            DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
+            Object [] fila = new Object[13];
+
+            fila[INDEX_CODIGO_PRODUCTO] = txtCodigoProducto.getText();
+            fila[INDEX_NOMBRE_PRODUCTO]= txtNombreProducto.getText();
+            fila[INDEX_EXISTENCIA] = Integer.parseInt(txtExistencia.getText());
+            fila[INDEX_PRECIO_VENTA] = Float.parseFloat(txtPrecioVenta.getText());
+            fila[INDEX_COSTO] = Float.parseFloat(txtCosto.getText());
+            fila[INDEX_DESCUENTO] = Integer.parseInt(txtDescuento.getText());
+            fila[INDEX_FABRICANTE] = txtFabricante.getText();
+            fila[INDEX_DESCRIPCION_PRODUCTO] = txtDescripcion.getText();
+            fila[INDEX_AREA_NEGOCIO] = cbAreaNegocio.getSelectedItem();
+            fila[INDEX_CLASE_PRIMARIA] = cbClasePrimaria.getSelectedItem();
+            fila[INDEX_CLASE_SECUNDARIA] = cbClaseSecundaria.getSelectedItem();
+            fila[INDEX_CLASE_TERCEARIA] = cbClaseTercearia.getSelectedItem();
+            fila[INDEX_NIVEL_ALERTA] = Integer.parseInt( txtNivelAlerta.getText() );
+            modelo.addRow(fila);
+
+            tblProductos.setModel(modelo);
+            
+            limpiarCampos();
+        }else{
+            System.out.println("Ha ocurrido un error al añadir los datos");
+        } 
+        
+    }//GEN-LAST:event_btnAddProductoActionPerformed
+
+    private void btnCancelarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarTodoActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarTodoActionPerformed
+
+    private void btnCancelSingleProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelSingleProductActionPerformed
+        // TODO add your handling code here:
+        limpiarCampos();
+    }//GEN-LAST:event_btnCancelSingleProductActionPerformed
+
+    private void btnProcesarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesarProductosActionPerformed
+        // TODO add your handling code here:
+
+        boolean ocurreError = true;
+        DefaultTableModel model = (DefaultTableModel) tblProductos.getModel();
+        DatosClases areaNeg = null;
+        DatosClases clasePrim = null;
+        DatosClases claseSec = null;
+        DatosClases claseTerc = null;
+
+        for ( int fila = 0; fila < model.getRowCount(); fila++ ){
+
+                areaNeg = ( DatosClases )this.tblProductos.getValueAt(fila, INDEX_AREA_NEGOCIO);
+                clasePrim = ( DatosClases )this.tblProductos.getValueAt(fila, INDEX_CLASE_PRIMARIA);
+                claseSec = ( DatosClases )this.tblProductos.getValueAt(fila, INDEX_CLASE_SECUNDARIA);
+                claseTerc = ( DatosClases )this.tblProductos.getValueAt(fila, INDEX_CLASE_TERCEARIA);
+            
+            try {
+                ocurreError = UtilNegocio.agregarProducto(
+                    this.tblProductos.getValueAt(fila, INDEX_NOMBRE_PRODUCTO).toString(),
+                    this.tblProductos.getValueAt(fila, INDEX_DESCRIPCION_PRODUCTO).toString(),
+                    this.tblProductos.getValueAt(fila, INDEX_FABRICANTE).toString(),
+                    Integer.parseInt(ModificadorCadenas.eliminaCaracteres(this.tblProductos.getValueAt(fila, INDEX_CODIGO_PRODUCTO).toString(), ".")),
+                    (int) this.tblProductos.getValueAt(fila, INDEX_EXISTENCIA),
+                    (int) this.tblProductos.getValueAt(fila, INDEX_NIVEL_ALERTA),
+                    datosUsuario.getUsuario(),
+                    areaNeg.getIdClase(),
+                    clasePrim.getIdClase(),
+                    claseSec.getIdClase(),
+                    claseTerc.getIdClase(),
+                    (float) this.tblProductos.getValueAt(fila, INDEX_COSTO),
+                    ( float ) this.tblProductos.getValueAt(fila, INDEX_PRECIO_VENTA),
+                    (int) this.tblProductos.getValueAt(fila, INDEX_DESCUENTO),
+                    conexionNegocio
+                );
+            } catch (SQLException ex) {
+                Logger.getLogger(JFRealizarVentas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if ( ocurreError == false ){
+                System.out.println("Ha ocurrido un error eliminando las cosas");
+                break;
+                
+            }
+            
+            model.removeRow(fila);
+            fila-=1;
+        }
+        
+        
+    }//GEN-LAST:event_btnProcesarProductosActionPerformed
+
+    private void rellenarClaseAreaNegocio(){
+        //
+        this.cbAreaNegocio.removeAllItems();
+        int tamanio = 0;
+        //Implementacion de lo demás del código
+        try{
+            datosAreasNegocios = UtilNegocio.devolverNombresClasesXP("a", 0, conexionNegocio );
+            tamanio = datosAreasNegocios.size();
+            for ( int indice = 0; indice < tamanio; indice++ ){
+                cbAreaNegocio.addItem( datosAreasNegocios.get(indice) );
+            }
+
+        this.cbAreaNegocio.addActionListener(
+            new ActionListener(){
+                public void actionPerformed(ActionEvent evt){
+                    JComboBox combo = (JComboBox) evt.getSource() ;
+                    DatosClases datosClases = (DatosClases) combo.getSelectedItem() ;
+                    if ( datosClases != null ){
+                        rellenarClasePrimaria( datosClases.getIdClase() );
+                    }
+                    else{
+                        System.out.println("No se ha podido leer info");
+                    }
+                }
+            }
+        );            
+            
+        }catch (SQLException e){
+            e.getErrorCode();
+        }
+    }      
+
+    private void rellenarClasePrimaria( int idClase ){
+        //
+        this.cbClasePrimaria.removeAllItems();
+        int tamanio = 0;
+        //Implementacion de lo demás del código
+        try{
+            datosClasePrimaria = UtilNegocio.devolverNombresClasesXP("1", idClase, conexionNegocio );
+            tamanio = datosClasePrimaria.size();
+            for ( int indice = 0; indice < tamanio; indice++ ){
+                cbClasePrimaria.addItem( datosClasePrimaria.get(indice) );
+            }            
+
+        this.cbClasePrimaria.addActionListener(
+            new ActionListener(){
+                public void actionPerformed(ActionEvent evt){
+                    JComboBox combo = (JComboBox) evt.getSource() ;
+                    DatosClases datosClases = (DatosClases) combo.getSelectedItem() ;
+                    if ( datosClases != null){
+                        rellenarClaseSecundaria( datosClases.getIdClase() );
+                    }else{
+                        System.out.println("No se ha podido leer información");
+                    }
+                    
+                }
+            }
+        );            
+            
+        }catch (SQLException e){
+            e.getErrorCode();
+        }
+    }     
+    
+    private void rellenarClaseSecundaria( int idClase ){
+        //
+        this.cbClaseSecundaria.removeAllItems();
+        int tamanio = 0;
+        //Implementacion de lo demás del código
+        try{
+            datosClaseSecundaria = UtilNegocio.devolverNombresClasesXP("2", idClase, conexionNegocio );
+            tamanio = datosClaseSecundaria.size();
+            for ( int indice = 0; indice < tamanio; indice++ ){
+                cbClaseSecundaria.addItem( datosClaseSecundaria.get(indice) );
+            }
+            
+        this.cbClaseSecundaria.addActionListener(
+            new ActionListener(){
+                public void actionPerformed(ActionEvent evt){
+                    JComboBox combo = (JComboBox) evt.getSource() ;
+                    DatosClases datosClases = (DatosClases) combo.getSelectedItem() ;
+                    if ( datosClases != null ){
+                        rellenarClaseTercearia( datosClases.getIdClase() );
+                    }else{
+                        System.out.println("Ha ocurrido un error leyendo la última parte");
+                    }
+                    
+                }
+            }
+        );            
+            
+        }catch (SQLException e){
+            e.getErrorCode();
+        }
+    } 
+
+    private void rellenarClaseTercearia( int idClase ){
+        //
+        this.cbClaseTercearia.removeAllItems();
+        int tamanio = 0;
+        //Implementacion de lo demás del código
+        try{
+            datosClaseTercearia = UtilNegocio.devolverNombresClasesXP("3", idClase, conexionNegocio );
+            tamanio = datosClaseTercearia.size();
+            for ( int indice = 0; indice < tamanio; indice++ ){
+                cbClaseTercearia.addItem( datosClaseTercearia.get(indice) );
+            }
+            
+        }catch (SQLException e){
+            e.getErrorCode();
+        }
+    }     
+    
+    private void limpiarCampos(){
+        this.txtCodigoProducto.setText(null);
+        this.txtCosto.setText(null);
+        this.txtDescripcion.setText(null);
+        this.txtDescuento.setText(null);
+        this.txtExistencia.setText(null);
+        this.txtFabricante.setText(null);
+        this.txtNivelAlerta.setText(null);
+        this.txtNombreProducto.setText(null);
+        this.txtPrecioVenta.setText(null);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -280,18 +595,20 @@ public class JFAddProducto extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFAddProducto().setVisible(true);
+                new JFAddProducto(null, null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<DatosClases> jComboBox1;
-    private javax.swing.JComboBox<DatosClases> jComboBox2;
-    private javax.swing.JComboBox<DatosClases> jComboBox3;
-    private javax.swing.JComboBox<DatosClases> jComboBox4;
+    private javax.swing.JButton btnAddProducto;
+    private javax.swing.JButton btnCancelSingleProduct;
+    private javax.swing.JButton btnCancelarTodo;
+    private javax.swing.JButton btnProcesarProductos;
+    private javax.swing.JComboBox<DatosClases> cbAreaNegocio;
+    private javax.swing.JComboBox<DatosClases> cbClasePrimaria;
+    private javax.swing.JComboBox<DatosClases> cbClaseSecundaria;
+    private javax.swing.JComboBox<DatosClases> cbClaseTercearia;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -306,15 +623,15 @@ public class JFAddProducto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JTable tblProductos;
+    private javax.swing.JTextField txtCodigoProducto;
+    private javax.swing.JTextField txtCosto;
+    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtDescuento;
+    private javax.swing.JTextField txtExistencia;
+    private javax.swing.JTextField txtFabricante;
+    private javax.swing.JTextField txtNivelAlerta;
+    private javax.swing.JTextField txtNombreProducto;
+    private javax.swing.JTextField txtPrecioVenta;
     // End of variables declaration//GEN-END:variables
 }

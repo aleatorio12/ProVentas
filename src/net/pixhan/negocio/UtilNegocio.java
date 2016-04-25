@@ -469,5 +469,32 @@ public class UtilNegocio {
         }
         return datosClases;
     }    
+
+    public static ArrayList<DatosClases> devolverNombresClasesXP ( String tipo, int clase, Connection conexion ) throws SQLException
+    {
+        ArrayList<DatosClases> datosClases = new ArrayList<DatosClases>();
+        try{  
+        CallableStatement cstmt =  conexion.prepareCall("{call punto_venta.devolverNombresClasesXP( ?, ? )}");
+
+        cstmt.setString("tipo", tipo); 
+        cstmt.setInt("clase", clase);
+        cstmt.execute();
+  
+        final ResultSet rs = cstmt.getResultSet();
+        
+        while ( rs.next() ){
+            DatosClases datos = new DatosClases( rs.getString("NOMBRE"), rs.getInt("ID") );
+            System.out.println( rs.getString("NOMBRE") );
+            System.out.println( rs.getInt("ID") );
+            datosClases.add(datos);            
+        }
+        
+        cstmt.close();
+
+        }catch(SQLException e){
+            System.out.println( e.getErrorCode() );
+        }
+        return datosClases;
+    }
     
 }

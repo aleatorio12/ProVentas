@@ -44,7 +44,7 @@ public class JFLogin extends javax.swing.JFrame {
             System.out.println("Error al conectarse");
         }
         else{
-            JFMenuPrincipal menuPrincipal = new JFMenuPrincipal( conexionSeguridad, conexionNegocio );
+            //JFMenuPrincipal menuPrincipal = new JFMenuPrincipal( conexionSeguridad, conexionNegocio );
         }
     }
 
@@ -159,7 +159,7 @@ public class JFLogin extends javax.swing.JFrame {
             if ( datosUsuario != null )
             {
                 this.dispose();
-                new JFMenuPrincipal( conexionSeguridad, conexionNegocio ).setVisible(true);
+                new JFMenuPrincipal( conexionSeguridad, conexionNegocio, datosUsuario ).setVisible(true);
             }
             else
             {

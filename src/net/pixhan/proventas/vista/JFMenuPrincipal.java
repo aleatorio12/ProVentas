@@ -7,6 +7,7 @@
 package net.pixhan.proventas.vista;
 
 import java.sql.Connection;
+import net.pixhan.utilidades.DatosUsuario;
 
 /**
  *
@@ -19,10 +20,12 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
 
     private static Connection conexionSeguridad;
     private static Connection conexionNegocio;
+    private static DatosUsuario datosUsuario;
     /** Creates new form JFMenuPrincipal */
-    public JFMenuPrincipal( Connection conexionSeguridad, Connection conexionNegocio ) {
+    public JFMenuPrincipal( Connection conexionSeguridad, Connection conexionNegocio, DatosUsuario datosUsuario ) {
         this.conexionNegocio = conexionNegocio;
         this.conexionSeguridad = conexionSeguridad;
+        this.datosUsuario = datosUsuario;
         initComponents();
     }
 
@@ -118,6 +121,11 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
         jMenu7.setText("Productos");
 
         jMenuItem14.setText("Agregar Producto");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
         jMenu7.add(jMenuItem14);
 
         jMenuItem15.setText("Actualizar Producto");
@@ -203,6 +211,12 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
         addClaseTercearia.setVisible(true);
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        // TODO add your handling code here:
+        JFAddProducto addProducto = new JFAddProducto( conexionNegocio, datosUsuario );
+        addProducto.setVisible(true);
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -233,7 +247,7 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFMenuPrincipal( null, null ).setVisible(true);
+                new JFMenuPrincipal( null, null, null ).setVisible(true);
             }
         });
     }

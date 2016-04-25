@@ -224,13 +224,13 @@ public class JFRealizarVentas extends javax.swing.JFrame {
 
     private void btnProcesarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesarVentaActionPerformed
         // TODO add your handling code here:
-        boolean ventaExitosa = false;
+        boolean ocurreError = true;
         DefaultTableModel model = (DefaultTableModel) tblVentaProductos.getModel();
 
         for ( int fila = 0; fila < model.getRowCount(); fila++ ){
 
             try {
-                ventaExitosa = UtilNegocio.venderProducto(
+                ocurreError = UtilNegocio.venderProducto(
                         ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(this.tblVentaProductos.getValueAt(fila, 0).toString(),".")),
                         datosUsuario.getUsuario(),
                         ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(this.tblVentaProductos.getValueAt(fila, 2).toString(),".")),
@@ -240,7 +240,7 @@ public class JFRealizarVentas extends javax.swing.JFrame {
                 Logger.getLogger(JFRealizarVentas.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            if ( ventaExitosa == false ){
+            if ( ocurreError == false ){
                 System.out.println("Ha ocurrido un error eliminando las cosas");
                 break;
                 

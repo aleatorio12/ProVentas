@@ -50,4 +50,8 @@ public class ModificadorCadenas {
         return Integer.parseInt(cadena.trim());        
     }
     
+    public static float cadenaADecimal( String cadena ){
+        return Float.parseFloat(cadena);
+    }
+    
 }
