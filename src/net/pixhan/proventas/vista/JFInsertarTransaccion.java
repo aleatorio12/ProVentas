@@ -25,10 +25,12 @@ public class JFInsertarTransaccion extends javax.swing.JFrame {
      */
     
     DatosUsuario datosUsuario;
-    Connection conexion;
+    Connection conexionNegocio;
     ValidacionCadenas validacion = new ValidacionCadenas();
     
-    public JFInsertarTransaccion() {
+    public JFInsertarTransaccion( Connection conexionNegocio, DatosUsuario datosUsuario ) {
+        this.datosUsuario = datosUsuario;
+        this.conexionNegocio = conexionNegocio;
         initComponents();
         rellenarClases();
         validacion.validarNumerosYPuntos(txtCantidad);
@@ -58,6 +60,8 @@ public class JFInsertarTransaccion extends javax.swing.JFrame {
         jLabel1.setText("Tipo:");
 
         jLabel3.setText("Cantidad:");
+
+        cbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Ingreso", "Egreso" }));
 
         btnAdd_Transaccion.setText("Añadir Transacción");
         btnAdd_Transaccion.addActionListener(new java.awt.event.ActionListener() {
@@ -115,11 +119,18 @@ public class JFInsertarTransaccion extends javax.swing.JFrame {
     private void btnAdd_TransaccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdd_TransaccionActionPerformed
         // TODO add your handling code here:
         boolean existeError = true;
+        String identificador;
+        if ( this.cbTipo.getSelectedItem().toString().equals("Ingreso") ){
+            identificador = "I";
+        }
+        else{
+            identificador = "E";
+        }
         try {
-            existeError = UtilNegocio.insertarTransaccion("I", 
+            existeError = UtilNegocio.insertarTransaccion( identificador , 
                     datosUsuario.getUsuario(),
-                    ModificadorCadenas.cadenaAEntero(txtCantidad.getText()),
-                    conexion);
+                    Float.parseFloat(txtCantidad.getText()),
+                    conexionNegocio);
             if ( existeError == true ){
                 System.out.println("Ha ocurrido un error");
             }
@@ -169,7 +180,7 @@ public class JFInsertarTransaccion extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFInsertarTransaccion().setVisible(true);
+                //new JFInsertarTransaccion().setVisible(true);
             }
         });
     }

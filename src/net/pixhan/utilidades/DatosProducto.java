@@ -18,10 +18,26 @@ public class DatosProducto {
 
     private int cantidad;
     private int alerta;
+    private int idProducto;
     private float descuento;
     private float precio;
+    private String codProducto;
     private String nombreProducto;
     private String descripcion;
+
+    public DatosProducto() {
+    }
+    
+    public DatosProducto(int cantidad, int alerta, int idProducto, float descuento, float precio, String codProducto, String nombreProducto, String descripcion) {
+        this.cantidad = cantidad;
+        this.alerta = alerta;
+        this.idProducto = idProducto;
+        this.descuento = descuento;
+        this.precio = precio;
+        this.codProducto = codProducto;
+        this.nombreProducto = nombreProducto;
+        this.descripcion = descripcion;
+    }    
 
     public DatosProducto(int cantidad, int precio, int alerta, float descuento, String nombreProducto, String descripcion) {
         this.cantidad = cantidad;
@@ -121,6 +137,34 @@ public class DatosProducto {
      */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    /**
+     * @return the idProducto
+     */
+    public int getIdProducto() {
+        return idProducto;
+    }
+
+    /**
+     * @param idProducto the idProducto to set
+     */
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
+    }
+
+    /**
+     * @return the codProducto
+     */
+    public String getCodProducto() {
+        return codProducto;
+    }
+
+    /**
+     * @param codProducto the codProducto to set
+     */
+    public void setCodProducto(String codProducto) {
+        this.codProducto = codProducto;
     }
 
 }

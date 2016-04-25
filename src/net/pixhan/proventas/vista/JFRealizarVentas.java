@@ -27,17 +27,17 @@ import net.pixhan.utilidades.ValidacionCadenas;
 public class JFRealizarVentas extends javax.swing.JFrame {
 
     private int cantidad;
-    private Connection conexion;
+    private Connection conexionNegocio;
     private ValidacionCadenas validacion = new ValidacionCadenas();
     private DatosUsuario datosUsuario;
     private DatosProducto datosProducto;
     private static final int TAMANIO_MAX_NOMBRE_PRODUCTO = 30;
     
     /** Creates new form JFRealizarVentas */
-    public JFRealizarVentas( Connection conexion, DatosUsuario datosUsuario ) {
-        initComponents();
-        this.conexion = conexion;
+    public JFRealizarVentas( Connection conexionNegocio, DatosUsuario datosUsuario ) {
+        this.conexionNegocio = conexionNegocio;
         this.datosUsuario = datosUsuario;
+        initComponents();
         validacion.validarNumerosYPuntos(txtCodigoProducto);
         validacion.validarSoloLetras(txtNombreProducto);
         validacion.validarSoloNumeros(txtCantidad);
@@ -61,13 +61,20 @@ public class JFRealizarVentas extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtCantidad = new javax.swing.JTextField();
         btnAnadirProducto = new javax.swing.JButton();
         btnBuscarProducto = new javax.swing.JButton();
         btnProcesarVenta = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        txtCantidad = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        txtNombreProducto.setEnabled(false);
+        txtNombreProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreProductoActionPerformed(evt);
+            }
+        });
 
         tblVentaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -101,6 +108,7 @@ public class JFRealizarVentas extends javax.swing.JFrame {
         jLabel3.setText("Cantidad");
 
         btnAnadirProducto.setText("Añadir Producto");
+        btnAnadirProducto.setEnabled(false);
         btnAnadirProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAnadirProductoActionPerformed(evt);
@@ -143,14 +151,12 @@ public class JFRealizarVentas extends javax.swing.JFrame {
                     .addComponent(txtCodigoProducto))
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnBuscarProducto)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnAnadirProducto)))
+                    .addComponent(btnBuscarProducto)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnAnadirProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtCantidad))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
@@ -166,12 +172,12 @@ public class JFRealizarVentas extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtCantidad))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -193,33 +199,59 @@ public class JFRealizarVentas extends javax.swing.JFrame {
 
     private void btnBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductoActionPerformed
         // TODO add your handling code here:
+
+        DatosProducto datos = null;
+        int idProducto = 0;
         
-        try {
-            this.cantidad = UtilNegocio.seleccionarProducto(ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(txtCodigoProducto.getText(),".")), txtNombreProducto.getText(), this.conexion);
-        } catch (SQLException ex) {
-            Logger.getLogger(JFRealizarVentas.class.getName()).log(Level.SEVERE, null, ex);
+        if ( this.txtCodigoProducto.getText().isEmpty() ){
+            System.out.println("No ha ingresado datos");
         }
-        
+        else{
+            idProducto = ModificadorCadenas.cadenaAEntero( ModificadorCadenas.eliminaCaracteres(txtCodigoProducto.getText(), ".") );
+            System.out.println("Vamos a iniciar el análisis: Id: "+ idProducto);
+            System.out.println("Hasta aquí todo bien");
+            datos = UtilNegocio.cargarDatosProducto(idProducto, null,conexionNegocio);
+            System.out.println("Perdimos conexion");
+            if ( datos != null ){
+                this.datosProducto = datos;
+                this.datosProducto.setCodProducto( this.txtCodigoProducto.getText() );
+                this.btnAnadirProducto.setEnabled(true);
+                System.out.println("Deberia habilitarse el boton");
+            }
+            else{
+                System.out.println("Ha ocurrido un error al obtener la información");
+            }
+        }
     }//GEN-LAST:event_btnBuscarProductoActionPerformed
 
     private void btnAnadirProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirProductoActionPerformed
+        int cant;
+        if ( this.datosProducto != null && !this.txtCantidad.getText().isEmpty() && !this.txtCodigoProducto.getText().isEmpty() ){
+        cant = ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(this.txtCantidad.getText(), "."));
+            if ( ( cant ) <= ( this.datosProducto.getCantidad() ) ){
+                float total = 0.00f;
+                DefaultTableModel modelo = (DefaultTableModel) tblVentaProductos.getModel();
+                Object [] fila = new Object[6];
 
-        float total = 0.00f;
-        DefaultTableModel modelo = (DefaultTableModel) tblVentaProductos.getModel();
-        Object [] fila = new Object[5];
+                fila[0] = txtCodigoProducto.getText();
+                fila[1]= datosProducto.getNombreProducto();
+                fila[2]= Integer.parseInt(ModificadorCadenas.eliminaCaracteres(txtCantidad.getText(),"."));
+                fila[3]= datosProducto.getPrecio();
+                fila[4]= datosProducto.getDescuento();
+                total = ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(txtCantidad.getText(),"."))
+                        * (datosProducto.getPrecio() - ( datosProducto.getPrecio() / 100 * datosProducto.getDescuento()));
+                fila[5]= total;
 
-        fila[0] = txtCodigoProducto.getText();
-        fila[1]= txtNombreProducto.getText();
-        fila[2]= ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(txtCantidad.getText(),"."));
-        fila[3]= datosProducto.getPrecio();
-        fila[4]= datosProducto.getDescuento();
-        total = ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(txtCantidad.getText(),"."))
-                * (datosProducto.getPrecio() - ( datosProducto.getPrecio() / 100 * datosProducto.getDescuento()));
-        fila[5]= total;
+                modelo.addRow(fila);
 
-        modelo.addRow(fila);
-
-        tblVentaProductos.setModel(modelo);        
+                tblVentaProductos.setModel(modelo);
+            }else{
+                System.out.println("Cantidad más grande que existencia");
+            }        
+        }else{
+            System.out.println("Campos no válidos");
+        }
+        
     }//GEN-LAST:event_btnAnadirProductoActionPerformed
 
     private void btnProcesarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesarVentaActionPerformed
@@ -234,13 +266,13 @@ public class JFRealizarVentas extends javax.swing.JFrame {
                         ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(this.tblVentaProductos.getValueAt(fila, 0).toString(),".")),
                         datosUsuario.getUsuario(),
                         ModificadorCadenas.cadenaAEntero(ModificadorCadenas.eliminaCaracteres(this.tblVentaProductos.getValueAt(fila, 2).toString(),".")),
-                        conexion
+                        conexionNegocio
                 );
             } catch (SQLException ex) {
                 Logger.getLogger(JFRealizarVentas.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            if ( ocurreError == false ){
+            if ( ocurreError == true ){
                 System.out.println("Ha ocurrido un error eliminando las cosas");
                 break;
                 
@@ -249,6 +281,7 @@ public class JFRealizarVentas extends javax.swing.JFrame {
             model.removeRow(fila);
             fila-=1;
         }
+        System.out.println("Todos los artículos procesados");
 
     }//GEN-LAST:event_btnProcesarVentaActionPerformed
 
@@ -259,7 +292,12 @@ public class JFRealizarVentas extends javax.swing.JFrame {
             model.removeRow(fila);
             fila-=1;
         }
+        this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void txtNombreProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreProductoActionPerformed
 
     /**
      * @param args the command line arguments

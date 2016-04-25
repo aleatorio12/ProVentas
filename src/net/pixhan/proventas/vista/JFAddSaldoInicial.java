@@ -5,17 +5,34 @@
  */
 package net.pixhan.proventas.vista;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.pixhan.negocio.UtilNegocio;
+import net.pixhan.seguridad.UtilSeguridad;
+import net.pixhan.utilidades.ValidacionCadenas;
+
 /**
  *
  * @author Baloo
  */
 public class JFAddSaldoInicial extends javax.swing.JFrame {
 
+    private static Connection conexionNegocio;
+    private static Connection conexionSeguridad;
+    private ValidacionCadenas validacion = new ValidacionCadenas();
+    private static final int TAMANIO_MAX_USERNAME = 30;
+    private static int idUsuario = 0;
     /**
      * Creates new form JFAddSaldoInicial
      */
-    public JFAddSaldoInicial() {
+    public JFAddSaldoInicial( Connection conexionNegocio, Connection conexionSeguridad ) {
+        this.conexionNegocio = conexionNegocio;
+        this.conexionSeguridad = conexionSeguridad;
         initComponents();
+        validacion.limitarCaracteres(txtUsuario, TAMANIO_MAX_USERNAME );
+        validacion.validarSoloLetras(txtUsuario);
     }
 
     /**
@@ -31,9 +48,34 @@ public class JFAddSaldoInicial extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
-        txtCantidad = new javax.swing.JTextField();
-        btnAdd_Saldo = new javax.swing.JButton();
+        txtQuetalMon = new javax.swing.JTextField();
+        btnAddSaldo = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        txtCincuentaCent = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        txtVeinticincoCent = new javax.swing.JTextField();
+        txtDiezCent = new javax.swing.JTextField();
+        txtCincoCent = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        txtQuetzalBillete = new javax.swing.JTextField();
+        txtCincoBillete = new javax.swing.JTextField();
+        txtVeinteBillete = new javax.swing.JTextField();
+        txtCincuentaBillete = new javax.swing.JTextField();
+        txtCienBillete = new javax.swing.JTextField();
+        txtDoscientosBillete = new javax.swing.JTextField();
+        btnBuscarUsuario = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        txtDiezBillete = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
 
         jTextField2.setText("jTextField2");
 
@@ -41,7 +83,7 @@ public class JFAddSaldoInicial extends javax.swing.JFrame {
 
         jLabel1.setText("Usuario:");
 
-        jLabel2.setText("Cantidad:");
+        jLabel2.setText("Quetzal:");
 
         txtUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -49,47 +91,229 @@ public class JFAddSaldoInicial extends javax.swing.JFrame {
             }
         });
 
-        btnAdd_Saldo.setText("Agregar Saldo Inicial");
+        txtQuetalMon.setEnabled(false);
+
+        btnAddSaldo.setText("Agregar Saldo Inicial");
+        btnAddSaldo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddSaldoActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Cincuenta Cent.:");
+
+        txtCincuentaCent.setEnabled(false);
+
+        jLabel4.setText("Veinticinco Cent.:");
+
+        jLabel5.setText("Diez Cent.:");
+
+        jLabel6.setText("Cinco Cent.:");
+
+        txtVeinticincoCent.setEnabled(false);
+
+        txtDiezCent.setEnabled(false);
+
+        txtCincoCent.setEnabled(false);
+
+        jLabel7.setText("Quetzal:");
+
+        jLabel8.setText("Cinco:");
+
+        jLabel9.setText("Veinte:");
+
+        jLabel10.setText("Cincuenta:");
+
+        jLabel11.setText("Cien:");
+
+        jLabel12.setText("Doscientos:");
+
+        txtQuetzalBillete.setEnabled(false);
+
+        txtCincoBillete.setEnabled(false);
+
+        txtVeinteBillete.setEnabled(false);
+
+        txtCincuentaBillete.setEnabled(false);
+
+        txtCienBillete.setEnabled(false);
+
+        txtDoscientosBillete.setEnabled(false);
+
+        btnBuscarUsuario.setText("Buscar Usuario");
+        btnBuscarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarUsuarioActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setText("Monedas");
+
+        jLabel14.setText("Billetes");
+
+        txtDiezBillete.setEnabled(false);
+
+        jLabel15.setText("Diez:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(66, 66, 66)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnAdd_Saldo)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(66, 66, 66)
+                                .addComponent(btnAddSaldo))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtQuetalMon, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(jLabel6)
+                                                    .addGap(34, 34, 34))
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                    .addComponent(jLabel4)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel5)
+                                                .addGap(40, 40, 40)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(txtDiezCent, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                            .addComponent(txtVeinticincoCent)
+                                            .addComponent(txtCincoCent)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtCincuentaCent)))))
                         .addGap(31, 31, 31)
-                        .addComponent(btnCancelar))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCancelar)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel15))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtDiezBillete, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+                                    .addComponent(txtQuetzalBillete)
+                                    .addComponent(txtCincoBillete)
+                                    .addComponent(txtVeinteBillete, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel12))
+                                .addGap(27, 27, 27)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtCincuentaBillete)
+                                    .addComponent(txtDoscientosBillete)
+                                    .addComponent(txtCienBillete)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(46, 46, 46)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(101, 101, 101)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(87, 87, 87)
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(97, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(btnBuscarUsuario)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(63, 63, 63)))
+                        .addGap(9, 9, 9)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(btnBuscarUsuario))
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtQuetalMon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)
+                            .addComponent(txtQuetzalBillete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCincuentaCent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel8)
+                            .addComponent(txtCincoBillete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtVeinticincoCent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(txtDiezBillete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(txtDiezCent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9)
+                            .addComponent(txtVeinteBillete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(txtCincoCent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(txtCincuentaBillete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCienBillete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11))
+                        .addGap(48, 48, 48))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(txtDoscientosBillete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(62, 62, 62)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd_Saldo)
+                    .addComponent(btnAddSaldo)
                     .addComponent(btnCancelar))
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addGap(26, 26, 26))
         );
 
         pack();
@@ -99,6 +323,93 @@ public class JFAddSaldoInicial extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
+    private void btnAddSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddSaldoActionPerformed
+        // TODO add your handling code here:
+
+        float cantidad = 0.000f;
+        boolean existeError = true;
+        
+        if ( !this.txtCincoCent.getText().isEmpty() &&
+                !this.txtDiezCent.getText().isEmpty() &&
+                !this.txtVeinticincoCent.getText().isEmpty() &&
+                !this.txtCincuentaCent.getText().isEmpty() &&
+                !this.txtQuetalMon.getText().isEmpty() &&
+                !this.txtQuetzalBillete.getText().isEmpty() &&
+                !this.txtCincoBillete.getText().isEmpty() &&
+                !this.txtDiezBillete.getText().isEmpty() &&
+                !this.txtVeinteBillete.getText().isEmpty() &&
+                !this.txtCincuentaBillete.getText().isEmpty() &&
+                !this.txtCienBillete.getText().isEmpty() &&
+                !this.txtDoscientosBillete.getText().isEmpty()
+                ){
+            cantidad = Integer.parseInt(this.txtCincoCent.getText()) * 0.05f;
+            cantidad += Integer.parseInt(this.txtVeinticincoCent.getText()) * 0.25f;
+            cantidad += Integer.parseInt(this.txtDiezCent.getText()) * 0.10f;
+            cantidad += Integer.parseInt(this.txtCincuentaCent.getText()) * 0.50f;
+            cantidad += Integer.parseInt(this.txtQuetalMon.getText());
+            cantidad += Integer.parseInt(this.txtQuetzalBillete.getText());
+            cantidad += Integer.parseInt(this.txtCincoBillete.getText()) * 5;
+            cantidad += Integer.parseInt(this.txtDiezBillete.getText()) * 10;
+            cantidad += Integer.parseInt(this.txtVeinteBillete.getText()) * 20;
+            cantidad += Integer.parseInt(this.txtCincuentaBillete.getText()) * 50;
+            cantidad += Integer.parseInt(this.txtCienBillete.getText()) * 100;
+            cantidad += Integer.parseInt(this.txtDoscientosBillete.getText()) * 200;
+            System.out.println( cantidad );
+
+            try{
+                existeError = UtilNegocio.asignarSaldosIniciales( idUsuario, cantidad, conexionNegocio );
+                if ( existeError == true ){
+                    System.out.println("Ha ocurrido un error al añadir los saldos");
+                }
+                else{
+                    System.out.println("Ingreso de datos correcto");
+                    this.dispose();
+                }                
+            } catch (SQLException ex) {
+                Logger.getLogger(JFAddSaldoInicial.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            System.out.println("No ha rellenado todos los campos");
+        }        
+    }//GEN-LAST:event_btnAddSaldoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnBuscarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarUsuarioActionPerformed
+        // TODO add your handling code here:
+        int codigoUsuario = 0;
+        try{
+            codigoUsuario = UtilSeguridad.obtenerIdUsuario(this.txtUsuario.getText(), conexionSeguridad);
+            System.out.println(codigoUsuario);
+            if ( codigoUsuario != 0 ){
+                this.idUsuario = codigoUsuario;
+                habilitarCampos();
+            }else{
+                System.out.println("Usuario no encontrado");
+            }            
+        } catch (SQLException ex) {
+            Logger.getLogger(JFAddSaldoInicial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnBuscarUsuarioActionPerformed
+
+    private void habilitarCampos(){
+        this.txtDiezCent.setEnabled(true);
+        this.txtVeinticincoCent.setEnabled(true);
+        this.txtCincuentaCent.setEnabled(true);
+        this.txtQuetalMon.setEnabled(true);
+        this.txtQuetzalBillete.setEnabled(true);
+        this.txtCincoBillete.setEnabled(true);
+        this.txtDiezBillete.setEnabled(true);
+        this.txtVeinteBillete.setEnabled(true);
+        this.txtCincuentaBillete.setEnabled(true);
+        this.txtCienBillete.setEnabled(true);
+        this.txtDoscientosBillete.setEnabled(true);
+        this.txtCincoCent.setEnabled(true);
+    }
     /**
      * @param args the command line arguments
      */
@@ -129,18 +440,43 @@ public class JFAddSaldoInicial extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFAddSaldoInicial().setVisible(true);
+                new JFAddSaldoInicial( null, null ).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdd_Saldo;
+    private javax.swing.JButton btnAddSaldo;
+    private javax.swing.JButton btnBuscarUsuario;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField txtCantidad;
+    private javax.swing.JTextField txtCienBillete;
+    private javax.swing.JTextField txtCincoBillete;
+    private javax.swing.JTextField txtCincoCent;
+    private javax.swing.JTextField txtCincuentaBillete;
+    private javax.swing.JTextField txtCincuentaCent;
+    private javax.swing.JTextField txtDiezBillete;
+    private javax.swing.JTextField txtDiezCent;
+    private javax.swing.JTextField txtDoscientosBillete;
+    private javax.swing.JTextField txtQuetalMon;
+    private javax.swing.JTextField txtQuetzalBillete;
     private javax.swing.JTextField txtUsuario;
+    private javax.swing.JTextField txtVeinteBillete;
+    private javax.swing.JTextField txtVeinticincoCent;
     // End of variables declaration//GEN-END:variables
 }

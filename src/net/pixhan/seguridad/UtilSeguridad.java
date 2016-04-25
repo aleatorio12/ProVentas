@@ -240,5 +240,32 @@ public class UtilSeguridad {
 
         return false;
     }
+
+    public static int obtenerIdUsuario ( String username, Connection conexion ) throws SQLException
+    {
+
+        int ocurreError;
+        int idUser = 0;
+        
+        CallableStatement cstmt =  conexion.prepareCall("{call security_proventas.obtenerIdUsuario(?, ?, ?)}");
+
+        cstmt.setString("nombre", username);
+        cstmt.registerOutParameter("idUsuario", java.sql.Types.SMALLINT);
+        cstmt.registerOutParameter("existeError", java.sql.Types.TINYINT);
+        
+        cstmt.execute();
+ 
+        ocurreError = cstmt.getInt("existeError");
+        idUser = cstmt.getInt("idUsuario");
+        cstmt.close();
+        
+        if ( ocurreError == SIN_ERROR )
+        {
+            return idUser;
+        }
+
+        return 0;
+
+    }        
     
 }

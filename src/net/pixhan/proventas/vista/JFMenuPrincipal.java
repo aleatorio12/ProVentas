@@ -43,7 +43,6 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
@@ -52,7 +51,6 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
         jMenuItem13 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenuItem14 = new javax.swing.JMenuItem();
-        jMenuItem15 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -67,16 +65,28 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
         jMenu5.setText("Operaciones");
 
         jMenuItem2.setText("Añadir Venta");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem2);
 
         jMenuItem3.setText("Añadir Compra");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem3);
 
         jMenuItem4.setText("Añadir Ingreso/Egreso");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem4);
-
-        jMenuItem5.setText("Salir");
-        jMenu5.add(jMenuItem5);
 
         jMenuBar1.add(jMenu5);
 
@@ -128,9 +138,6 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
         });
         jMenu7.add(jMenuItem14);
 
-        jMenuItem15.setText("Actualizar Producto");
-        jMenu7.add(jMenuItem15);
-
         jMenu1.add(jMenu7);
 
         jMenuBar1.add(jMenu1);
@@ -138,9 +145,15 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
         jMenu2.setText("Usuarios");
 
         jMenuItem6.setText("Añadir Usuario");
+        jMenuItem6.setEnabled(false);
         jMenu2.add(jMenuItem6);
 
         jMenuItem1.setText("Asignar Saldo Inicial");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem1);
 
         jMenuBar1.add(jMenu2);
@@ -217,6 +230,31 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
         addProducto.setVisible(true);
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        JFAddSaldoInicial addSaldoInicial = new JFAddSaldoInicial( conexionNegocio, conexionSeguridad );
+        addSaldoInicial.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        JFRealizarVentas realizarVentas = new JFRealizarVentas( conexionNegocio, datosUsuario );
+        realizarVentas.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        JFInsertarTransaccion insertarTransaccion = new JFInsertarTransaccion(conexionNegocio, datosUsuario );
+        insertarTransaccion.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        JFCompraProducto compraProducto = new JFCompraProducto( conexionNegocio, datosUsuario );
+        compraProducto.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -267,11 +305,9 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;

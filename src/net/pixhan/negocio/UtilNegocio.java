@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComboBox;
 import net.pixhan.utilidades.DatosProducto;
 
 /**
@@ -249,7 +248,7 @@ public class UtilNegocio {
         }
 
         return true;
-        
+      
     }
 
     public static boolean comprarProducto ( int producto, int cantidad, int usuario, float costo, Connection conexion ) throws SQLException
@@ -402,42 +401,6 @@ public class UtilNegocio {
         return true;
     }    
 
-    public static DatosProducto cargarDatosProducto ( int producto, Connection conexion ) throws SQLException
-    {
-
-        DatosProducto datosProducto = null;
-        int ocurreError;
-        
-        CallableStatement cstmt =  conexion.prepareCall("{call punto_venta.cargarDatosProducto(?, ?, ?, ?, ?, ?, ?)}");
-
-        cstmt.setInt("producto", producto);
-        cstmt.registerOutParameter("alerta", java.sql.Types.SMALLINT);
-        cstmt.registerOutParameter("descuento", java.sql.Types.TINYINT);
-        cstmt.registerOutParameter("precioVenta", java.sql.Types.FLOAT);
-        cstmt.registerOutParameter("nombreProducto", java.sql.Types.VARCHAR);
-        cstmt.registerOutParameter("descripcion", java.sql.Types.VARCHAR);
-        cstmt.registerOutParameter("existeError", java.sql.Types.TINYINT);
-        
-        cstmt.execute();
- 
-        ocurreError = cstmt.getInt("existeError");            
- 
-        if ( ocurreError == SIN_ERROR )
-        {
-
-            datosProducto.setAlerta(cstmt.getInt("alerta"));
-            datosProducto.setDescuento(cstmt.getInt("descuento"));
-            datosProducto.setPrecio(cstmt.getFloat("precioVenta"));
-            datosProducto.setNombreProducto(cstmt.getString("nombreProducto"));
-            datosProducto.setDescripcion(cstmt.getString("descripcion"));
-           
-        }        
-
-        cstmt.close();
-
-        return datosProducto;
-    }    
-    
     /**
      *
      * @param tipo
@@ -497,4 +460,54 @@ public class UtilNegocio {
         return datosClases;
     }
     
+    public static DatosProducto cargarDatosProducto( int identificador, String nombreProducto, Connection conexion ){
+    
+        int ocurreError = 0;
+        try {
+            DatosProducto datosProducto = null;
+            
+            if ( identificador != 0 ){
+                nombreProducto = "";
+            }else
+            {
+                identificador = 0;
+            }
+            
+            CallableStatement cmt = conexion.prepareCall("{call punto_venta.cargarDatosProducto(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+            
+            cmt.setInt("producto", identificador);
+            cmt.setString("nombre", nombreProducto);
+            cmt.registerOutParameter("idProducto", java.sql.Types.SMALLINT);
+            cmt.registerOutParameter("stock", java.sql.Types.SMALLINT);
+            cmt.registerOutParameter("alerta", java.sql.Types.SMALLINT);
+            cmt.registerOutParameter("descuento", java.sql.Types.TINYINT);
+            cmt.registerOutParameter("precioVenta", java.sql.Types.FLOAT);
+            cmt.registerOutParameter("nombreProducto", java.sql.Types.VARCHAR);
+            cmt.registerOutParameter("descripcion", java.sql.Types.VARCHAR);
+            cmt.registerOutParameter("existeError", java.sql.Types.TINYINT);
+            
+            cmt.execute();
+            
+            ocurreError = cmt.getInt("existeError");
+            
+            if ( ocurreError == SIN_ERROR ){
+                datosProducto = new DatosProducto();
+                datosProducto.setAlerta( cmt.getInt("alerta") );
+                datosProducto.setCantidad( cmt.getInt("stock") );
+                datosProducto.setDescripcion( cmt.getString("descripcion" ));
+                datosProducto.setIdProducto( cmt.getInt("idProducto" ));
+                datosProducto.setNombreProducto( cmt.getString("nombreProducto"));
+                datosProducto.setPrecio( cmt.getFloat("precioVenta") );
+            }
+            
+            cmt.close();
+            
+            return datosProducto;
+        } catch (SQLException ex) {
+            Logger.getLogger(UtilNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+        
 }

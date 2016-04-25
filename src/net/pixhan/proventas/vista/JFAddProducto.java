@@ -427,16 +427,14 @@ public class JFAddProducto extends javax.swing.JFrame {
                 Logger.getLogger(JFRealizarVentas.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            if ( ocurreError == false ){
+            if ( ocurreError == true ){
                 System.out.println("Ha ocurrido un error eliminando las cosas");
-                break;
-                
+                break;   
             }
             
             model.removeRow(fila);
             fila-=1;
         }
-        
         
     }//GEN-LAST:event_btnProcesarProductosActionPerformed
 
