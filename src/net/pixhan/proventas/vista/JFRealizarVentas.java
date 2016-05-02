@@ -31,6 +31,7 @@ public class JFRealizarVentas extends javax.swing.JFrame {
     private ValidacionCadenas validacion = new ValidacionCadenas();
     private DatosUsuario datosUsuario;
     private DatosProducto datosProducto;
+    private float totalGlobal = 0.00f;
     private static final int TAMANIO_MAX_NOMBRE_PRODUCTO = 30;
     
     /** Creates new form JFRealizarVentas */
@@ -66,8 +67,11 @@ public class JFRealizarVentas extends javax.swing.JFrame {
         btnProcesarVenta = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         txtCantidad = new javax.swing.JTextField();
+        lblTotal = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        txtExistencia = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         txtNombreProducto.setEnabled(false);
         txtNombreProducto.addActionListener(new java.awt.event.ActionListener() {
@@ -81,7 +85,7 @@ public class JFRealizarVentas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Código Producto", "Nombrel Producto", "Cantidad", "Precio", "Descuento (%)", "Total"
+                "Código Producto", "Nombrel Producto", "Cantidad", "Precio", "Descuento (%)", "Subtotal"
             }
         ) {
             Class[] types = new Class [] {
@@ -136,6 +140,12 @@ public class JFRealizarVentas extends javax.swing.JFrame {
             }
         });
 
+        lblTotal.setText("Total: ");
+
+        jLabel4.setText("Existencia");
+
+        txtExistencia.setEditable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -151,19 +161,27 @@ public class JFRealizarVentas extends javax.swing.JFrame {
                     .addComponent(txtCodigoProducto))
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnBuscarProducto)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAnadirProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtCantidad))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnBuscarProducto)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAnadirProducto))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(176, 176, 176)
+                .addComponent(lblTotal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnProcesarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -177,7 +195,9 @@ public class JFRealizarVentas extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)
+                        .addComponent(txtExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -190,7 +210,8 @@ public class JFRealizarVentas extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
-                    .addComponent(btnProcesarVenta))
+                    .addComponent(btnProcesarVenta)
+                    .addComponent(lblTotal))
                 .addGap(20, 20, 20))
         );
 
@@ -208,15 +229,16 @@ public class JFRealizarVentas extends javax.swing.JFrame {
         }
         else{
             idProducto = ModificadorCadenas.cadenaAEntero( ModificadorCadenas.eliminaCaracteres(txtCodigoProducto.getText(), ".") );
-            System.out.println("Vamos a iniciar el análisis: Id: "+ idProducto);
-            System.out.println("Hasta aquí todo bien");
+//            System.out.println("Vamos a iniciar el análisis: Id: "+ idProducto);
+//            System.out.println("Hasta aquí todo bien");
             datos = UtilNegocio.cargarDatosProducto(idProducto, null,conexionNegocio);
-            System.out.println("Perdimos conexion");
+//            System.out.println("Perdimos conexion");
             if ( datos != null ){
                 this.datosProducto = datos;
                 this.datosProducto.setCodProducto( this.txtCodigoProducto.getText() );
                 this.btnAnadirProducto.setEnabled(true);
-                System.out.println("Deberia habilitarse el boton");
+                this.txtExistencia.setText( String.valueOf(this.datosProducto.getCantidad()) );
+//                System.out.println("Deberia habilitarse el boton");
             }
             else{
                 System.out.println("Ha ocurrido un error al obtener la información");
@@ -245,6 +267,10 @@ public class JFRealizarVentas extends javax.swing.JFrame {
                 modelo.addRow(fila);
 
                 tblVentaProductos.setModel(modelo);
+                
+                this.totalGlobal += total;
+                
+                this.lblTotal.setText("Total: " + this.totalGlobal );
             }else{
                 System.out.println("Cantidad más grande que existencia");
             }        
@@ -282,6 +308,8 @@ public class JFRealizarVentas extends javax.swing.JFrame {
             fila-=1;
         }
         System.out.println("Todos los artículos procesados");
+        
+        this.totalGlobal = 0.00f;
 
     }//GEN-LAST:event_btnProcesarVentaActionPerformed
 
@@ -292,7 +320,7 @@ public class JFRealizarVentas extends javax.swing.JFrame {
             model.removeRow(fila);
             fila-=1;
         }
-        this.dispose();
+        //this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtNombreProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreProductoActionPerformed
@@ -342,10 +370,13 @@ public class JFRealizarVentas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblTotal;
     private javax.swing.JTable tblVentaProductos;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtCodigoProducto;
+    private javax.swing.JTextField txtExistencia;
     private javax.swing.JTextField txtNombreProducto;
     // End of variables declaration//GEN-END:variables
 

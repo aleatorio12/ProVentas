@@ -136,6 +136,7 @@ public class JFInsertarTransaccion extends javax.swing.JFrame {
             }
             else{
                 System.out.println("Sin errores");
+                this.dispose();
             }
                
                 

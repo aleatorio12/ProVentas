@@ -2,7 +2,7 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -36,23 +36,32 @@
               </Group>
               <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btnBuscarProducto" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel3" alignment="0" min="-2" pref="75" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="btnAnadirProducto" max="32767" attributes="0"/>
-                  <Component id="txtCantidad" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="btnBuscarProducto" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnAnadirProducto" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabel3" min="-2" pref="75" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txtCantidad" min="-2" pref="84" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="txtExistencia" min="-2" pref="50" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="642" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="638" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnCancelar" min="-2" pref="110" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="176" max="-2" attributes="0"/>
+              <Component id="lblTotal" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
               <Component id="btnProcesarVenta" min="-2" pref="118" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -69,6 +78,8 @@
                       <Component id="txtCodigoProducto" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                       <Component id="jLabel3" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                       <Component id="txtCantidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtExistencia" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -86,6 +97,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnProcesarVenta" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblTotal" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
           </Group>
@@ -119,7 +131,7 @@
                 <Column editable="false" title="Cantidad" type="java.lang.Integer"/>
                 <Column editable="false" title="Precio" type="java.lang.Float"/>
                 <Column editable="false" title="Descuento (%)" type="java.lang.Float"/>
-                <Column editable="false" title="Total" type="java.lang.Float"/>
+                <Column editable="false" title="Subtotal" type="java.lang.Float"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -212,6 +224,21 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtCantidad">
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblTotal">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Total: "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Existencia"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtExistencia">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
