@@ -57,7 +57,7 @@ public class JFAddClasePrimaria extends javax.swing.JFrame {
         txtDescripcionClasePrimaria = new javax.swing.JTextField();
         cbAreaNegocio = new javax.swing.JComboBox<DatosClases>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Area De Negocio:");
 

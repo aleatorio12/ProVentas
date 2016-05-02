@@ -31,6 +31,9 @@ public class JFLogin extends javax.swing.JFrame {
     private Connection conexionNegocio;
     private ValidacionCadenas validacion = new ValidacionCadenas();
     private static final int TAMANIO_MAX_USERNAME = 15;
+    private static final int ROL_INGENIERO = 1;
+    private static final int ROL_ADMINISTRADOR = 2;
+    private static final int ROL_VENDEDOR = 3;
     
     /** Creates new form JFLogin */
     public JFLogin() {
@@ -159,7 +162,16 @@ public class JFLogin extends javax.swing.JFrame {
             if ( datosUsuario != null )
             {
                 this.dispose();
-                new JFMenuPrincipal( conexionSeguridad, conexionNegocio, datosUsuario ).setVisible(true);
+                if ( datosUsuario.getRol() == ROL_ADMINISTRADOR || datosUsuario.getRol() == ROL_INGENIERO ){
+                    new JFMenuPrincipal( conexionSeguridad, conexionNegocio, datosUsuario ).setVisible(true);                
+                }
+                else
+                    if( datosUsuario.getRol() == ROL_VENDEDOR ){
+                        new JFRealizarVentas( conexionNegocio, datosUsuario ).setVisible(true);
+                    }
+                    else{
+                        System.out.println("No posee el permiso");
+                    }
             }
             else
             {

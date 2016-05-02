@@ -121,10 +121,10 @@ public class UtilSeguridad {
         
         if ( ocurreError == SIN_ERROR )
         {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     public static boolean agregarUsuario ( 
@@ -137,36 +137,47 @@ public class UtilSeguridad {
             String username,
             String contrasenia,
             int rol,
+            boolean esActivo,
             Connection conexion )
             throws SQLException
     {
 
         int ocurreError;
+        String actividad;
         
-        CallableStatement cstmt =  conexion.prepareCall("{call security_proventas.agregarUsuario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
-            
-        cstmt.setString("primerNombre", primerNombre);
-        cstmt.setString("segundoNombre", segundoNombre);
-        cstmt.setString("tercerNombre", tercerNombre);
-        cstmt.setString("primerApellido", primerApellido);
-        cstmt.setString("segundoApellido", segundoApellido);
-        cstmt.setString("apellidoCasada", apellidoCasada);
-        cstmt.setString("username", username);
-        cstmt.setString("contrasenia", contrasenia);
-        cstmt.setInt("rol", rol);
-        cstmt.registerOutParameter("existeError", java.sql.Types.TINYINT);
-        cstmt.execute();
-
-        ocurreError = cstmt.getInt("existeError");
- 
-        cstmt.close();
-        
-        if ( ocurreError == SIN_ERROR )
-        {
-            return true;
+        if ( esActivo == true ){
+            actividad = "1";
+        }else{
+            actividad = "0";
         }
 
-        return false;
+        if ( username.length() > 0 ){
+
+            CallableStatement cstmt =  conexion.prepareCall("{call security_proventas.agregarUsuario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+            
+            cstmt.setString("primerNombre", primerNombre);
+            cstmt.setString("segundoNombre", segundoNombre);
+            cstmt.setString("tercerNombre", tercerNombre);
+            cstmt.setString("primerApellido", primerApellido);
+            cstmt.setString("segundoApellido", segundoApellido);
+            cstmt.setString("apellidoCasada", apellidoCasada);
+            cstmt.setString("username", username);
+            cstmt.setString("contrasenia", contrasenia);
+            cstmt.setString("esActivo", actividad);
+            cstmt.setInt("rol", rol);
+            cstmt.registerOutParameter("existeError", java.sql.Types.TINYINT);
+            cstmt.execute();
+
+            ocurreError = cstmt.getInt("existeError");
+ 
+            cstmt.close();
+        
+            if ( ocurreError == SIN_ERROR )
+            {
+                return false;
+            }
+        }        
+        return true;
     }
 
     public static boolean revocarPermiso ( int rol, int permiso, Connection conexion ) throws SQLException
@@ -187,10 +198,10 @@ public class UtilSeguridad {
         
         if ( ocurreError == SIN_ERROR )
         {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     public static boolean agregarPermiso ( String nombre, String descripcion, Connection conexion ) throws SQLException
@@ -211,10 +222,10 @@ public class UtilSeguridad {
         
         if ( ocurreError == SIN_ERROR )
         {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     public static boolean agregarRol ( String nombre, String descripcion, Connection conexion ) throws SQLException
@@ -235,10 +246,10 @@ public class UtilSeguridad {
         
         if ( ocurreError == SIN_ERROR )
         {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     public static int obtenerIdUsuario ( String username, Connection conexion ) throws SQLException

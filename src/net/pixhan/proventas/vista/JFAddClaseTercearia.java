@@ -58,7 +58,7 @@ public class JFAddClaseTercearia extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JButton();
         cbClaseSecundaria = new javax.swing.JComboBox<DatosClases>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Clase Secundaria:");
 

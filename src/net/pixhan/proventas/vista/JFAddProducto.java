@@ -115,7 +115,7 @@ public class JFAddProducto extends javax.swing.JFrame {
         btnCancelSingleProduct = new javax.swing.JButton();
         btnCancelarTodo = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Código Producto:");
 

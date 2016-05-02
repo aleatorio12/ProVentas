@@ -6,8 +6,19 @@
 
 package net.pixhan.proventas.vista;
 
+import java.io.File;
 import java.sql.Connection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.pixhan.utilidades.DatosUsuario;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+
 
 /**
  *
@@ -145,7 +156,11 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
         jMenu2.setText("Usuarios");
 
         jMenuItem6.setText("Añadir Usuario");
-        jMenuItem6.setEnabled(false);
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem6);
 
         jMenuItem1.setText("Asignar Saldo Inicial");
@@ -169,6 +184,11 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
         jMenu3.add(jMenuItem7);
 
         jMenuItem9.setText("Saldo Diario");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem9);
 
         jMenuBar1.add(jMenu3);
@@ -197,7 +217,29 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+//            String nombreArchivo = "Alguno";
+//            JasperReport reporte = (JasperReport) JRLoader.loadObject();
+            //InputStream jasperStream = getClass().getResourceAsStream("reporte1.jasper");
+            File jasper = new File("H:\\Proyecto-Be-1\\proventas-connector\\ProVentas Connector\\reporteProductosStockBajo.jasper");
+            JasperReport report = (JasperReport) JRLoader.loadObject(jasper);
+            JasperPrint jPrint = JasperFillManager.fillReport(report, null, conexionNegocio);
+            JasperViewer.viewReport( jPrint, false );
+/*            String archivo = getClass().getResource("/net/pixhan/proventas/reportes/reporteProductosStockBajo.jrxml").getPath();
+            System.out.println( archivo );
+            JasperReport report = JasperCompileManager.compileReport( "H:/Proyecto-Be-1/proventas-connector/ProVentas%20Connector/build/classes/net/pixhan/proventas/reportes/reporteProductosStockBajo.jrxml" );
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, null, conexionNegocio);
+            JasperViewer.viewReport(jasperPrint, false);
+
+            String path = FacesContext.getCurrentInstance().getExternalContext().
+                    getRealPath("/vista/reportes/activosfijos/etiquetas.jasper");
+            JasperPrint reporte = JasperFillManager.fillReport(path, args, connection);            
+*/            
+        } catch (JRException ex) {
+            Logger.getLogger(JFMenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
@@ -254,6 +296,24 @@ public class JFMenuPrincipal extends javax.swing.JFrame {
         JFCompraProducto compraProducto = new JFCompraProducto( conexionNegocio, datosUsuario );
         compraProducto.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        try {
+            // TODO add your handling code here:
+            File jasper = new File("H:\\Proyecto-Be-1\\proventas-connector\\ProVentas Connector\\reporte1.jasper");
+            JasperReport report = (JasperReport) JRLoader.loadObject(jasper);
+            JasperPrint jPrint = JasperFillManager.fillReport(report, null, conexionNegocio);
+            JasperViewer.viewReport( jPrint, false );        
+        } catch (JRException ex) {
+            Logger.getLogger(JFMenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // TODO add your handling code here:
+        JFAddUsuario addUsuario = new JFAddUsuario( conexionSeguridad );
+        addUsuario.setVisible(true);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**
      * @param args the command line arguments

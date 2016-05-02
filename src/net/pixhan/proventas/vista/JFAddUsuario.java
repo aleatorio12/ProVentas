@@ -5,6 +5,14 @@
  */
 package net.pixhan.proventas.vista;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.pixhan.seguridad.UtilSeguridad;
+import net.pixhan.utilidades.ModificadorCadenas;
+import net.pixhan.utilidades.ValidacionCadenas;
+
 /**
  *
  * @author Baloo
@@ -14,8 +22,33 @@ public class JFAddUsuario extends javax.swing.JFrame {
     /**
      * Creates new form JFAnadirUsuario
      */
-    public JFAddUsuario() {
+
+    private static Connection conexionSeguridad;
+    private static final int LARGO_MAX_NOMBRES = 30;
+    private static final int LARGO_MAX_USERNAME = 15;
+    private static final int LARGO_MAX_PASSWORD = 30;
+    private static ValidacionCadenas validacion = new ValidacionCadenas();
+    
+    public JFAddUsuario( Connection conexionSeguridad ) {
+        this.conexionSeguridad = conexionSeguridad;
         initComponents();
+        validacion.limitarCaracteres(this.txtPrimer_Nombre, LARGO_MAX_NOMBRES);
+        validacion.limitarCaracteres(this.txtSegundo_Nombre, LARGO_MAX_NOMBRES);
+        validacion.limitarCaracteres(this.txtTercer_Nombre, LARGO_MAX_NOMBRES);
+        validacion.limitarCaracteres(this.txtPrimer_Apellido, LARGO_MAX_NOMBRES);
+        validacion.limitarCaracteres(this.txtSegundo_Apellido, LARGO_MAX_NOMBRES);
+        validacion.limitarCaracteres(this.txtApellido_Casada, LARGO_MAX_NOMBRES);
+        validacion.limitarCaracteres(this.txtUsername, LARGO_MAX_USERNAME);
+        validacion.limitarCaracteres(this.txtPassword, LARGO_MAX_PASSWORD);
+        validacion.limitarCaracteres(this.txtRepetirPassword, LARGO_MAX_PASSWORD);
+        
+        validacion.validarSoloLetras(this.txtPrimer_Nombre);
+        validacion.validarSoloLetras(this.txtSegundo_Nombre);
+        validacion.validarSoloLetras(this.txtTercer_Nombre);
+        validacion.validarSoloLetras(this.txtPrimer_Apellido);
+        validacion.validarSoloLetras(this.txtSegundo_Apellido);
+        validacion.validarSoloLetras(this.txtApellido_Casada);
+        validacion.validarSoloLetras(this.txtUsername);        
     }
 
     /**
@@ -45,12 +78,14 @@ public class JFAddUsuario extends javax.swing.JFrame {
         txtApellido_Casada = new javax.swing.JTextField();
         txtUsername = new javax.swing.JTextField();
         cdmAdd_Usuario = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
+        cbRol = new javax.swing.JComboBox();
         btnCancelar = new javax.swing.JButton();
         txtRepetirPassword = new javax.swing.JPasswordField();
         txtPassword = new javax.swing.JPasswordField();
+        jLabel11 = new javax.swing.JLabel();
+        cbEsActivo = new javax.swing.JComboBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Primer Nombre:");
 
@@ -85,9 +120,14 @@ public class JFAddUsuario extends javax.swing.JFrame {
         });
 
         cdmAdd_Usuario.setText("Añadir Usuario");
+        cdmAdd_Usuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cdmAdd_UsuarioActionPerformed(evt);
+            }
+        });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Administrador", "Vendedor" }));
-        jComboBox1.setSelectedIndex(1);
+        cbRol.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Administrador", "Vendedor" }));
+        cbRol.setSelectedIndex(1);
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -95,6 +135,10 @@ public class JFAddUsuario extends javax.swing.JFrame {
                 btnCancelarActionPerformed(evt);
             }
         });
+
+        jLabel11.setText("¿Puede loguearse?");
+
+        cbEsActivo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "No", "Sí" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -113,7 +157,8 @@ public class JFAddUsuario extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(jLabel9)
                     .addComponent(jLabel10)
-                    .addComponent(cdmAdd_Usuario))
+                    .addComponent(cdmAdd_Usuario)
+                    .addComponent(jLabel11))
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtApellido_Casada)
@@ -122,11 +167,12 @@ public class JFAddUsuario extends javax.swing.JFrame {
                     .addComponent(txtTercer_Nombre)
                     .addComponent(txtSegundo_Nombre)
                     .addComponent(txtPrimer_Nombre)
-                    .addComponent(jComboBox1, 0, 131, Short.MAX_VALUE)
+                    .addComponent(cbRol, 0, 131, Short.MAX_VALUE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtRepetirPassword)
                     .addComponent(txtPassword)
-                    .addComponent(txtUsername))
+                    .addComponent(txtUsername)
+                    .addComponent(cbEsActivo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(101, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -159,7 +205,7 @@ public class JFAddUsuario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
@@ -172,11 +218,15 @@ public class JFAddUsuario extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
                     .addComponent(txtRepetirPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCancelar)
-                    .addComponent(cdmAdd_Usuario))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(cbEsActivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cdmAdd_Usuario)
+                    .addComponent(btnCancelar))
+                .addGap(21, 21, 21))
         );
 
         pack();
@@ -194,6 +244,52 @@ public class JFAddUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void cdmAdd_UsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cdmAdd_UsuarioActionPerformed
+        try {
+            // TODO add your handling code here:
+            boolean puedeLoguearse = false;
+            int rol = 3;
+            boolean ocurreError = false;
+            
+            if ( this.cbEsActivo.getSelectedItem().toString().equalsIgnoreCase("Sí") ){
+                puedeLoguearse = true;
+            }
+            if ( this.cbRol.getSelectedItem().toString().equalsIgnoreCase("Administrador") ){
+                rol = 2;
+            }
+            
+            if ( this.txtPassword.getText().equalsIgnoreCase( this.txtRepetirPassword.getText() ) ){
+            
+                ocurreError = UtilSeguridad.agregarUsuario(
+                        this.txtPrimer_Nombre.getText(),
+                        this.txtSegundo_Nombre.getText(),
+                        this.txtTercer_Nombre.getText(),
+                        this.txtPrimer_Apellido.getText(),
+                        this.txtSegundo_Apellido.getText(),
+                        this.txtApellido_Casada.getText(),
+                        this.txtUsername.getText(),
+                        this.txtPassword.getText(),
+                        rol,
+                        puedeLoguearse,
+                        conexionSeguridad
+                );
+            
+                if ( !ocurreError ){
+                    System.out.println("Todo ok, se ha añadido correctamente");
+                    this.dispose();
+                }
+                else{
+                    System.out.println("Ha ocurrido un error");
+                }
+            }else{
+                System.out.println("Las contraseñas no coinciden");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JFAddUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_cdmAdd_UsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -226,17 +322,19 @@ public class JFAddUsuario extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFAddUsuario().setVisible(true);
+//                new JFAddUsuario().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JComboBox cbEsActivo;
+    private javax.swing.JComboBox cbRol;
     private javax.swing.JButton cdmAdd_Usuario;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

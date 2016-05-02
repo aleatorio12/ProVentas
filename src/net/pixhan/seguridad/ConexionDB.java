@@ -34,13 +34,14 @@ public class ConexionDB {
 
         DatosUsuario datos = null;
 
+//        conectese1 = UtilSeguridad.agregarRol("Ingeniero", "General de todo", miConexion);        
 //        conectese1 = UtilSeguridad.agregarRol("Administrador", "General de todo", miConexion);
 //        conectese1 = UtilSeguridad.agregarRol("Vendedor", "General de todo", miConexion);
 //        conectese1 = UtilSeguridad.agregarPermiso("Iniciar Sesión", "Iniciar sesión general", miConexion);
 //        conectese1 = UtilSeguridad.agregarPermiso("Cerrar sesión", "Cerrar sesión general", miConexion);
-//        conectese1 = UtilSeguridad.agregarUsuario("Alan", "Guillermo", null, "Samayoa", "Hernández", null, "taco", "123456", 1, miConexion);
-//        conectese1 = UtilSeguridad.agregarUsuario("Victor", "Manuel", null, "Matías", "Raymundo", null, "vitomany", "123456", 2, miConexion);
-        conectese1 = UtilSeguridad.agregarUsuario("Cesar", "Emanuel", null, "Cifuentes", "Monterroso", null, "baloo", "123456", 2, miConexion);
+//        conectese1 = UtilSeguridad.agregarUsuario("Alan", "Guillermo", null, "Samayoa", "Hernández", null, "taco", "123456", false, 1, miConexion);
+//        conectese1 = UtilSeguridad.agregarUsuario("Victor", "Manuel", null, "Matías", "Raymundo", null, "vitomany", "123456", true, 2, miConexion);
+//        conectese1 = UtilSeguridad.agregarUsuario("Cesar", "Emanuel", null, "Cifuentes", "Monterroso", null, "baloo", "123456", true, 2, miConexion);
 //        conectese1 = UtilSeguridad.asignarPermiso(1, 1, miConexion);
 //        conectese1 = UtilSeguridad.asignarPermiso(2, 1, miConexion);
 //        conectese1 = UtilSeguridad.poseePermiso(1, 1, miConexion);

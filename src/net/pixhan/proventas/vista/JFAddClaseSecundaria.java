@@ -62,7 +62,7 @@ public class JFAddClaseSecundaria extends javax.swing.JFrame {
         txtDescripcionClaseSecundaria = new javax.swing.JTextField();
         cbClasePrimaria = new javax.swing.JComboBox<DatosClases>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Clase Primaria:");
 
